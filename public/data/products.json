@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "title": "Robot Aspiradora Doméstica",
+    "description": "Aspira y limpia de forma autónoma.",
+    "image": "/images/01-aspiradora.jpg",
+    "price": 199.99
+  },
+  {
+    "id": 2,
+    "title": "Robot Educativo para Niños",
+    "description": "Enseña programación básica.",
+    "image": "/images/02-robot_educativo.jpg",
+    "price": 89.99
+  },
+  {
+    "id": 3,
+    "title": "Robot de Cocina Multifunción",
+    "description": "Mezcla, cocina y procesa.",
+    "image": "/images/03-robot_cocina.jpg",
+    "price": 249.99
+  },
+  {
+    "id": 4,
+    "title": "Robot Humanoide de Interacción",
+    "description": "Puede hablar y expresar emociones.",
+    "image": "/images/04-robot_personal.jpg",
+    "price": 499.99
+  },
+  {
+    "id": 5,
+    "title": "Robot Vigilante con Cámara",
+    "description": "Monitoreo de seguridad del hogar.",
+    "image": "/images/05-robot_vigilante.jpg",
+    "price": 150.00
+  },
+  {
+    "id": 6,
+    "title": "Robot Jardinero",
+    "description": "Corta el césped y riega automáticamente.",
+    "image": "/images/06-robot_jardinero.jpg",
+    "price": 300.00
+  },
+  {
+    "id": 7,
+    "title": "Mini Robot Mascota",
+    "description": "Interactúa y aprende rutinas.",
+    "image": "/images/07-robot_mascota.jpg",
+    "price": 60.00
+  },
+  {
+    "id": 8,
+    "title": "Robot Limpiacristales",
+    "description": "Limpieza de ventanas automatizada.",
+    "image": "/images/08-robot_limpia_cristales.jpg",
+    "price": 130.00
+  },
+  {
+    "id": 9,
+    "title": "Kit de Brazo Robótico DIY",
+    "description": "Arma y programa tu propio robot.",
+    "image": "/images/09-kit_brazo_robotico.webp",
+    "price": 80.00
+  },
+  {
+    "id": 10,
+    "title": "Robot Camarero",
+    "description": "Sirve bebidas y comidas.",
+    "image": "/images/10-robot_camarero.jpg",
+    "price": 650.00
+  },
+  {
+    "id": 11,
+    "title": "Robot Limpiapiscinas",
+    "description": "Mantiene el agua limpia y sin hojas.",
+    "image": "/images/11-robot_limpia_piscinas.jpg",
+    "price": 400.00
+  },
+  {
+    "id": 12,
+    "title": "Robot Móvil Autónomo",
+    "description": "Evita obstáculos y patrulla.",
+    "image": "/images/12-robot_autonomo.jpg",
+    "price": 220.00
+  }
+]

@@ -1,0 +1,196 @@
+/* App.css */
+
+/* General styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2, h1 {
+  color: #333;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+}
+
+/* Navbar styles */
+.navbar {
+  background-color: #343a40;
+}
+
+.navbar .navbar-brand {
+  color: #39FF14;
+  font-weight: bold;
+}
+
+.navbar-toggler {
+  border-color: #39FF14;
+}
+
+.navbar .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar .navbar-nav .nav-link.active {
+  color: #39FF14;
+}
+
+/* Hero section */
+.hero {
+  background-color: #343a40;
+  color: #fff;
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3rem;
+}
+
+/* Product Card styles */
+.card {
+  border: none;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Levanta la tarjeta al pasar el ratón */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+  transition: transform 0.3s ease; /* Efecto de zoom en la imagen */
+}
+
+.product-img-container:hover .card-img-top {
+  transform: scale(1.1); /* Zoom en la imagen */
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-weight: bold;
+  color: #333;
+}
+
+.card-text {
+  font-size: 14px;
+  color: #757575;
+}
+
+.card-text .fw-bold {
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.btn-dark {
+  background-color: #343a40;
+  border-color: #343a40;
+  color: #39FF14;
+  transition: background-color 0.3s ease;
+}
+
+.btn-dark:hover {
+  background-color: #39FF14;
+  color: #343a40;
+}
+
+/* Gallery styles */
+.row {
+  margin-top: 2rem;
+}
+
+.col-md-4 {
+  padding: 0.5rem;
+}
+
+.product-card {
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra alrededor de la tarjeta */
+}
+
+.product-card:hover {
+  transform: translateY(-10px); /* Levanta la tarjeta un poco al pasar el ratón */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+}
+
+/* Contenedor de la galería */
+.container {
+  background: linear-gradient(to right, #f3f4f6, #e2e8f0);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+  .hero {
+    padding: 3rem 1rem;
+  }
+
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #39FF14;
+  }
+
+  .product-card {
+    text-align: center;
+  }
+}
+
+/* Para mejorar el diseño en la galería con más columnas en pantallas grandes */
+@media (min-width: 768px) {
+  .product-card {
+    max-width: 350px;
+  }
+}
+
+/* Ajustes para los botones de la galería */
+.product-card-btn {
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.product-card-btn:hover {
+  background-color: #1565c0; /* Azul más oscuro */
+  cursor: pointer;
+}
+
+
+
