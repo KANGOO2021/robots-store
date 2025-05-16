@@ -32,8 +32,8 @@ const Home = () => {
       </div>
 
       <div className="text-center mt-5">
-        <a href="/gallery" className="btn btn-dark btn-lg" style={{ color: "#39FF14", borderColor: "#39FF14" }}>
-          Explorar la Galería de Robots
+        <a href="/gallery" className="btn btn-dark btn-lg explore-btn">
+          <span className="hover-text">¡Descubrí nuestros modelos!</span>
         </a>
       </div>
     </div>
@@ -41,5 +41,6 @@ const Home = () => {
 };
 
 export default Home;
+
 
 

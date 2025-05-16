@@ -2,22 +2,27 @@ import { Link } from 'react-router-dom';
 
 function Cart({ cart, updateQuantity, removeFromCart, clearCart, finishPurchase, calculateTotal }) {
   return (
-    <div className="container mt-4">
+    <main className="cart-main container mt-4">
       <h2>Mi Carrito</h2>
 
       {cart.length === 0 ? (
-        <div className="text-center">
-          <p className="fw-bold text-danger">Tu carrito está vacío.</p>
+        <div className="text-center empty-cart">
+          <p className="fw-bold text-danger fs-4">Tu carrito está vacío.</p>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
+            alt="Carrito vacío"
+            className="empty-cart-img"
+          />
           <Link
             to="/gallery"
-            className="btn btn-dark btn-lg mt-3"
-            style={{ color: "#39FF14", borderColor: "#39FF14" }}
+            className="btn btn-dark btn-lg mt-3 explore-btn"
           >
             Ir a la Galería y seguir comprando
           </Link>
         </div>
       ) : (
         <>
+          {/* Aquí va el contenido normal del carrito */}
           <div className="list-group">
             {cart.map((item) => (
               <div key={item.id} className="list-group-item d-flex justify-content-between align-items-center">
@@ -54,11 +59,14 @@ function Cart({ cart, updateQuantity, removeFromCart, clearCart, finishPurchase,
           </div>
         </>
       )}
-    </div>
+    </main>
   );
 }
 
 export default Cart;
+
+
+
 
 
 
