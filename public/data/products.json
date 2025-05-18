@@ -4,83 +4,98 @@
     "title": "Robot Aspiradora Doméstica",
     "description": "Aspira y limpia de forma autónoma.",
     "image": "/images/01-aspiradora.jpg",
-    "price": 199.99
+    "price": 199.99,
+    "details": "El Robot Aspiradora Doméstica es un dispositivo inteligente que se encarga de limpiar el hogar de forma autónoma. Equipado con sensores de última tecnología, puede detectar obstáculos, evitar caídas y recorrer todo tipo de superficies, desde cerámicas hasta alfombras. Gracias a su potente motor de succión y su sistema de navegación inteligente, logra una limpieza eficiente incluso en rincones difíciles de alcanzar. Incluye varios modos de limpieza y puede ser programado desde una app móvil o controlado por voz mediante asistentes como Alexa o Google Assistant. El depósito de polvo es lavable y fácil de vaciar, y su batería de larga duración le permite cubrir grandes superficies antes de regresar automáticamente a su base de carga. Ideal para quienes desean mantener su hogar limpio sin esfuerzo diario, este robot se convierte en un asistente confiable que se adapta a las rutinas del usuario y mejora la calidad del aire gracias a su filtro HEPA. Su diseño compacto permite limpiar debajo de muebles, y su funcionamiento silencioso no interfiere con las actividades del hogar. Una solución moderna, práctica y eficiente para la limpieza del día a día."
   },
   {
     "id": 2,
     "title": "Robot Educativo para Niños",
     "description": "Enseña programación básica.",
     "image": "/images/02-robot_educativo.jpg",
-    "price": 89.99
+    "price": 89.99,
+    "details": "El Robot Educativo para Niños es una excelente herramienta para que los pequeños aprendan programación básica mientras se divierten. A través de una app amigable, permite crear rutinas y comportamientos usando bloques de código visual. Es ideal para desarrollar el pensamiento lógico y fomentar el interés por la tecnología desde edades tempranas. Además, es interactivo: puede moverse, emitir sonidos, iluminarse y reaccionar a comandos. Fabricado con materiales seguros para niños, este robot educativo está diseñado para resistir el uso diario. Su uso puede extenderse a entornos escolares como complemento en clases de tecnología o robótica. Estimula la creatividad, la autonomía y el aprendizaje activo. Muchos modelos incluyen desafíos progresivos para adaptarse a distintos niveles de habilidad. A través del juego y la exploración, los niños comprenden conceptos esenciales del pensamiento computacional y mejoran sus habilidades en resolución de problemas. El robot puede personalizarse y expandirse con accesorios y módulos adicionales, lo que prolonga su vida útil y mantiene el interés del usuario. En definitiva, es una inversión educativa que combina entretenimiento y aprendizaje de forma efectiva, ideal para familias y educadores que desean preparar a los niños para un futuro digital."
   },
   {
     "id": 3,
     "title": "Robot de Cocina Multifunción",
     "description": "Mezcla, cocina y procesa.",
     "image": "/images/03-robot_cocina.jpg",
-    "price": 249.99
+    "price": 249.99,
+    "details": "El Robot de Cocina Multifunción es el aliado perfecto en la preparación de comidas. Mezcla, cocina, tritura y procesa alimentos con gran eficiencia. Con múltiples funciones automatizadas, ahorra tiempo y facilita la elaboración de recetas complejas. Incluye una pantalla táctil intuitiva y programas preestablecidos. Su diseño moderno y compacto se adapta a cualquier cocina. Permite preparar desde sopas y masas hasta postres o platos sofisticados. Con controles de temperatura, velocidad y tiempo, brinda resultados precisos y consistentes. Incluye accesorios desmontables aptos para lavavajillas, lo que facilita su limpieza. Gracias a su potencia y versatilidad, reduce la necesidad de múltiples electrodomésticos, optimizando espacio y funcionalidad. Ideal tanto para cocineros experimentados como para principiantes, este robot hace que cocinar sea más simple, rápido y placentero."
   },
   {
     "id": 4,
     "title": "Robot Humanoide de Interacción",
     "description": "Puede hablar y expresar emociones.",
     "image": "/images/04-robot_personal.jpg",
-    "price": 499.99
+    "price": 499.99,
+    "details": "El Robot Humanoide de Interacción está diseñado para ofrecer experiencias comunicativas únicas. Puede hablar, expresar emociones mediante gestos faciales, y responder a estímulos del entorno. Es ideal para acompañamiento en hogares, instituciones educativas o eventos. Su inteligencia artificial le permite aprender y adaptarse al usuario. Además de mantener conversaciones básicas, puede contar historias, dar recordatorios y brindar información útil. A través de sensores y cámaras, reconoce rostros y reacciona a expresiones humanas. Algunos modelos integran funciones como bailes, juegos interactivos o control por voz. Representa un avance en la robótica social, promoviendo el vínculo entre personas y tecnología."
   },
   {
     "id": 5,
     "title": "Robot Vigilante con Cámara",
     "description": "Monitoreo de seguridad del hogar.",
     "image": "/images/05-robot_vigilante.jpg",
-    "price": 150.00
+    "price": 150.00,
+    "details": "El Robot Vigilante con Cámara es una solución moderna para la seguridad del hogar. Equipado con cámara HD, sensores de movimiento y conectividad Wi-Fi, patrulla espacios interiores y exteriores detectando cualquier actividad sospechosa. Al identificar movimientos inusuales, envía notificaciones inmediatas al celular del usuario, permitiendo una respuesta rápida desde cualquier lugar. También puede grabar en tiempo real y almacenar imágenes en la nube o en tarjeta SD. Su diseño compacto y su capacidad de navegación autónoma le permiten desplazarse entre habitaciones, evitando obstáculos. Algunos modelos cuentan con visión nocturna, altavoces para comunicación bidireccional y alarmas disuasorias. Es ideal tanto para viviendas como para negocios que requieren una vigilancia activa sin necesidad de instalaciones complejas. Puede integrarse con sistemas de domótica, sincronizándose con alarmas, luces y cerraduras inteligentes. Gracias a su batería recargable o base fija, brinda autonomía operativa constante. Su uso no solo aumenta la seguridad, sino que también aporta tranquilidad a quienes desean monitorear a distancia a sus seres queridos, mascotas o bienes. Una herramienta de protección accesible, funcional y tecnológicamente avanzada."
   },
   {
     "id": 6,
     "title": "Robot Jardinero",
     "description": "Corta el césped y riega automáticamente.",
     "image": "/images/06-robot_jardinero.jpg",
-    "price": 300.00
+    "price": 300.00,
+    "details": "El Robot Jardinero automatiza el cuidado del jardín, cortando el césped y regando las plantas según un calendario programado. Gracias a sus sensores inteligentes, detecta bordes, obstáculos y zonas que necesitan más atención. Funciona de manera silenciosa, permitiendo que trabaje incluso durante la noche sin molestar. Su diseño robusto es resistente a la intemperie, por lo que puede operar bajo sol o lluvia sin inconvenientes. El sistema de corte ajustable deja el césped uniforme y saludable, y sus ruedas todoterreno le permiten moverse con agilidad incluso en terrenos irregulares. Además, cuenta con un sistema de seguridad que detiene las cuchillas si se levanta accidentalmente. Algunos modelos incluyen conectividad por app, lo que permite monitorear su actividad y programarlo desde cualquier lugar. El sistema de riego integrado es eficiente, dosificando el agua para evitar el desperdicio. Este robot es ideal para personas con poco tiempo o movilidad reducida, que desean mantener su jardín impecable con el menor esfuerzo. También es una excelente opción ecológica al reducir el uso de combustible y agua. En definitiva, un asistente verde que transforma el mantenimiento del jardín en una tarea totalmente automatizada y sin estrés."
   },
   {
     "id": 7,
     "title": "Mini Robot Mascota",
     "description": "Interactúa y aprende rutinas.",
     "image": "/images/07-robot_mascota.jpg",
-    "price": 60.00
+    "price": 60.00,
+    "details": "El Mini Robot Mascota es una adorable creación tecnológica que simula comportamientos de un animal de compañía. Diseñado para interactuar con usuarios de todas las edades, puede emitir sonidos, moverse, responder al tacto y reconocer voces. Gracias a su sistema de aprendizaje, adapta sus respuestas según la rutina y el trato que recibe, generando una conexión emocional con sus dueños. Ideal para niños, ancianos o personas que no pueden cuidar de una mascota real, ofrece compañía sin los compromisos de alimentación, limpieza o paseos. Su tamaño compacto y diseño simpático lo hacen fácil de transportar y manipular. Algunos modelos pueden realizar trucos, bailar o expresar emociones básicas a través de luces y sonidos. Además, su batería recargable le permite largas horas de juego. También puede ser una herramienta terapéutica en contextos de salud mental o estimulación cognitiva. Estimula la interacción, el afecto y la responsabilidad sin generar alergias ni problemas logísticos. El Mini Robot Mascota combina entretenimiento, tecnología y afecto en un solo dispositivo, haciendo que la experiencia de tener un compañero interactivo sea accesible y divertida para todos."
   },
   {
     "id": 8,
     "title": "Robot Limpiacristales",
     "description": "Limpieza de ventanas automatizada.",
     "image": "/images/08-robot_limpia_cristales.jpg",
-    "price": 130.00
+    "price": 130.00,
+    "details": "El Robot Limpiacristales revoluciona la limpieza de ventanas al automatizar una de las tareas más tediosas del hogar u oficina. Se adhiere mediante succión a superficies verticales como vidrios o espejos, desplazándose en líneas ordenadas para limpiar sin dejar marcas. Utiliza paños de microfibra y sistemas de pulverización que garantizan un acabado profesional. Ideal para ventanales altos o inaccesibles, elimina la necesidad de escaleras y reduce los riesgos de accidentes. Algunos modelos pueden controlarse por control remoto o mediante una app móvil, ofreciendo flexibilidad y comodidad al usuario. Detecta bordes y obstáculos, adaptando su ruta para no salirse de la superficie. Además, su sistema de seguridad evita caídas incluso si se corta la energía, y puede detenerse automáticamente al finalizar su tarea. Este robot es especialmente útil en edificios con grandes superficies vidriadas, negocios o viviendas modernas. Su diseño compacto permite guardarlo fácilmente y su mantenimiento es mínimo. Una opción eficiente, segura y tecnológica para mantener siempre relucientes las ventanas del hogar, mejorando tanto la estética como la luminosidad de los espacios interiores."
   },
   {
     "id": 9,
     "title": "Kit de Brazo Robótico DIY",
     "description": "Arma y programa tu propio robot.",
     "image": "/images/09-kit_brazo_robotico.webp",
-    "price": 80.00
+    "price": 80.00,
+    "details": "El Kit de Brazo Robótico DIY es una excelente introducción al mundo de la robótica y la programación para entusiastas de todas las edades. Este kit permite construir un brazo mecánico articulado que puede ejecutar movimientos precisos, como agarrar, rotar o levantar objetos livianos. Viene con todas las piezas necesarias y un manual detallado para facilitar el ensamblado, lo cual promueve el aprendizaje práctico de mecánica, electrónica y lógica computacional. Una vez armado, el brazo puede controlarse por joystick, aplicación móvil o comandos de código, según el modelo elegido. Es ideal para estudiantes, educadores o aficionados que buscan un proyecto estimulante y educativo. Compatible con plataformas como Arduino, facilita la personalización y expansión con sensores o módulos adicionales. Su uso desarrolla habilidades en resolución de problemas, pensamiento crítico y creatividad. Además, es una herramienta valiosa para introducir conceptos de automatización y control remoto en contextos académicos o de hobby. Robusto, reutilizable y altamente didáctico, este kit transforma la experiencia de construir en una puerta de entrada al mundo de la tecnología moderna, brindando satisfacción y conocimientos útiles para quienes desean explorar el fascinante campo de la robótica desde cero."
   },
   {
     "id": 10,
     "title": "Robot Camarero",
     "description": "Sirve bebidas y comidas.",
     "image": "/images/10-robot_camarero.jpg",
-    "price": 650.00
+    "price": 650.00,
+    "details": "El Robot Camarero es una solución innovadora para el servicio en restaurantes, hoteles y eventos. Diseñado para transportar y servir alimentos y bebidas, este robot se desplaza de manera autónoma gracias a su sistema de navegación inteligente, evitando obstáculos y adaptándose al entorno. Puede seguir rutas programadas o ser controlado mediante una app, y en algunos modelos incluso responder a comandos de voz. Su diseño futurista y amigable mejora la experiencia del cliente, generando impacto visual y diferenciación del servicio. Con bandejas estables y sensores de equilibrio, garantiza un transporte seguro incluso en ambientes con mucho movimiento. También puede hablar, anunciar pedidos o agradecer a los comensales, generando interacción y simpatía. Su batería de larga duración y construcción robusta permiten un uso intensivo diario. Es una opción cada vez más adoptada para mejorar la eficiencia, reducir costos laborales y atraer la atención de un público moderno. Ideal para negocios que buscan incorporar tecnología sin sacrificar calidad de atención, el Robot Camarero representa una fusión entre innovación, funcionalidad y espectáculo en la experiencia gastronómica. Además, es fácilmente programable y su mantenimiento es mínimo, lo que lo convierte en una inversión inteligente a largo plazo."
   },
   {
     "id": 11,
     "title": "Robot Limpiapiscinas",
     "description": "Mantiene el agua limpia y sin hojas.",
     "image": "/images/11-robot_limpia_piscinas.jpg",
-    "price": 400.00
+    "price": 400.00,
+    "details": "El Robot Limpiapiscinas es un dispositivo diseñado para mantener el agua de la piscina cristalina y libre de hojas, suciedad o algas. Totalmente autónomo, se sumerge y recorre el fondo, las paredes y, en algunos modelos, incluso la línea de flotación. Equipado con cepillos giratorios, filtros de alta capacidad y sensores de navegación, elimina eficazmente residuos y sedimentos. Puede programarse para operar a determinadas horas del día, y muchos modelos ofrecen conectividad por app para monitoreo remoto. Su funcionamiento silencioso y eficiente reduce el uso de productos químicos, ahorra tiempo y esfuerzo en el mantenimiento y optimiza el consumo de agua. Al no depender del sistema de filtrado de la piscina, prolonga la vida útil del equipo principal. Es apto para piscinas de distintos tamaños y revestimientos. Además, su diseño compacto permite almacenarlo fácilmente cuando no está en uso. Ideal tanto para hogares como para clubes o complejos turísticos, este robot garantiza una limpieza profunda, constante y sin intervención humana. Su inversión se traduce en comodidad, salubridad y ahorro a largo plazo. El Robot Limpiapiscinas convierte el mantenimiento en una tarea completamente automatizada y libre de preocupaciones."
   },
   {
     "id": 12,
     "title": "Robot Móvil Autónomo",
     "description": "Evita obstáculos y patrulla.",
     "image": "/images/12-robot_autonomo.jpg",
-    "price": 220.00
+    "price": 220.00,
+    "details": "El Robot Móvil Autónomo es un dispositivo versátil capaz de desplazarse de manera inteligente por distintos entornos. Gracias a sus sensores de proximidad, cámaras y algoritmos de navegación, evita obstáculos y patrulla áreas programadas con precisión. Es ideal para tareas de vigilancia, monitoreo, transporte ligero o asistencia en espacios industriales o domésticos. Puede configurarse mediante software para seguir rutas específicas, mapear el entorno o adaptarse a cambios en tiempo real. Algunos modelos permiten comunicación en vivo, transmisión de video o integración con sistemas de seguridad. Su autonomía de batería es extensa, y su estructura robusta le permite operar en interiores y exteriores. Es también una excelente herramienta educativa para estudiantes de robótica y automatización, ya que puede ser personalizado con nuevos módulos o programaciones. Compacto, funcional y preparado para múltiples usos, el Robot Móvil Autónomo representa un paso adelante en soluciones de movilidad inteligente. Su uso está creciendo en sectores como logística, seguridad y educación, donde se valora la eficiencia operativa y la capacidad de adaptación a diferentes escenarios. En definitiva, es una plataforma moderna y flexible para quienes buscan automatizar tareas de patrullaje, transporte o asistencia técnica."
   }
 ]
+
+
+

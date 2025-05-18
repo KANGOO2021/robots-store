@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import robotLogo from "/robostore-favicon.png"; // Ajusta la ruta según la ubicación real
+
 
 const Navbar = ({ cartItemCount }) => {
   const getActiveClass = ({ isActive }) =>
@@ -7,6 +9,7 @@ const Navbar = ({ cartItemCount }) => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+      <img className="me-3" src={robotLogo} alt="Robot Logo" width="32" height="32" />
       <NavLink className="navbar-brand" to="/">Robots Store</NavLink>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span className="navbar-toggler-icon"></span>

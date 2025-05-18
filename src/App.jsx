@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -74,7 +75,6 @@ function App() {
   const removeFromCart = (id) => {
     const item = cart.find((item) => item.id === id);
     if (item) toast.warn(`${item.title} eliminado del carrito.`);
-
     const newCart = cart.filter((item) => item.id !== id);
     setCart(newCart);
   };
@@ -98,19 +98,22 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery products={products} addToCart={addToCart} cart={cart} />} />
         <Route path="/contact" element={<Contact />} />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              cart={cart}
-              updateQuantity={updateQuantity}
-              removeFromCart={removeFromCart}
-              clearCart={clearCart}
-              finishPurchase={finishPurchase}
-              calculateTotal={() => calculateTotal(cart)} // Aquí pasamos la función calculateTotal
-            />
-          }
-        />
+        <Route path="/cart" element={
+          <Cart
+            cart={cart}
+            updateQuantity={updateQuantity}
+            removeFromCart={removeFromCart}
+            clearCart={clearCart}
+            finishPurchase={finishPurchase}
+            calculateTotal={() => calculateTotal(cart)}
+          />
+        } />
+        <Route path="/products/:id" element={
+          <ProductDetail
+            products={products}
+            addToCart={addToCart}
+          />
+        } /> {/* ✅ Ruta dinámica agregada */}
       </Routes>
       <Footer />
       <ToastContainer position="bottom-right" autoClose={1000} hideProgressBar />
@@ -119,6 +122,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
