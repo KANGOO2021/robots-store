@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
 
+/**
+ * Componente que muestra el contenido del carrito de compras.
+ * Recibe funciones para modificar cantidades, eliminar productos,
+ * vaciar el carrito y finalizar la compra.
+ */
 function Cart({ cart, updateQuantity, removeFromCart, clearCart, finishPurchase, calculateTotal }) {
   return (
     <main className="cart-main container mt-4">
       <h2>Mi Carrito</h2>
 
+      {/* Si el carrito está vacío, se muestra un mensaje e imagen */}
       {cart.length === 0 ? (
         <div className="text-center empty-cart">
           <p className="fw-bold text-danger fs-4">Tu carrito está vacío.</p>
@@ -22,7 +28,7 @@ function Cart({ cart, updateQuantity, removeFromCart, clearCart, finishPurchase,
         </div>
       ) : (
         <>
-          {/* Aquí va el contenido normal del carrito */}
+          {/* Lista de productos en el carrito */}
           <div className="list-group">
             {cart.map((item) => (
               <div key={item.id} className="list-group-item d-flex justify-content-between align-items-center">
@@ -40,6 +46,8 @@ function Cart({ cart, updateQuantity, removeFromCart, clearCart, finishPurchase,
                     </p>
                   </div>
                 </div>
+
+                {/* Controles para modificar cantidad o eliminar producto */}
                 <div className="d-flex align-items-center">
                   <button className="btn btn-outline-secondary me-2" onClick={() => updateQuantity(item.id, -1)}>-</button>
                   <span className="mx-2">{item.quantity}</span>
@@ -50,6 +58,7 @@ function Cart({ cart, updateQuantity, removeFromCart, clearCart, finishPurchase,
             ))}
           </div>
 
+          {/* Sección inferior con total y botones de acción */}
           <div className="d-flex justify-content-between align-items-center mt-4">
             <h4>Total: <span className="text-success">${calculateTotal().toFixed(2)}</span></h4>
             <div className="d-flex gap-3">
@@ -64,6 +73,7 @@ function Cart({ cart, updateQuantity, removeFromCart, clearCart, finishPurchase,
 }
 
 export default Cart;
+
 
 
 

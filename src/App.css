@@ -1,6 +1,6 @@
 /* App.css */
 
-/* General styles */
+/* Estilos generales */
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f8f9fa;
@@ -11,9 +11,12 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  background: linear-gradient(to right, #f3f4f6, #e2e8f0);
+  border-radius: 10px;
+  padding: 20px;
 }
 
-h2, h1 {
+h1, h2 {
   color: #333;
 }
 
@@ -29,7 +32,7 @@ h2 {
   font-size: 1.2rem;
 }
 
-/* Navbar styles */
+/* Estilos de la barra de navegación */
 .navbar {
   background-color: #343a40;
 }
@@ -51,7 +54,7 @@ h2 {
   color: #39FF14;
 }
 
-/* Hero section */
+/* Sección principal */
 .hero {
   background-color: #343a40;
   color: #fff;
@@ -63,7 +66,24 @@ h2 {
   font-size: 3rem;
 }
 
-/* Product Card styles */
+/* Estilos para las tarjetas de producto */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra alrededor */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-10px); /* Levanta la tarjeta al pasar el ratón */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+}
+
 .card {
   border: none;
   background: #fff;
@@ -73,24 +93,20 @@ h2 {
 }
 
 .card:hover {
-  transform: translateY(-5px); /* Levanta la tarjeta al pasar el ratón */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .card-img-top {
-  object-fit: cover;
+  width: 100%;
   height: 200px;
-  transition: transform 0.3s ease; /* Efecto de zoom en la imagen */
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
+/* Zoom en la imagen cuando se pasa el ratón por encima */
 .product-img-container:hover .card-img-top {
-  transform: scale(1.1); /* Zoom en la imagen */
-}
-
-.product-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  transform: scale(1.1);
 }
 
 .card-body {
@@ -112,6 +128,7 @@ h2 {
   color: #2c3e50;
 }
 
+/* Estilos para los botones */
 .btn-dark {
   background-color: #343a40;
   border-color: #343a40;
@@ -119,12 +136,40 @@ h2 {
   transition: background-color 0.3s ease;
 }
 
-.btn-dark:hover {
+.btn-dark:hover,
+.btn-dark:focus {
   background-color: #39FF14;
   color: #343a40;
+  outline: none;
 }
 
-/* Gallery styles */
+.btn-dark:focus {
+  outline: 2px solid #39FF14;
+  outline-offset: 2px;
+}
+
+.product-card-btn {
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.product-card-btn:hover,
+.product-card-btn:focus {
+  background-color: #1565c0;
+  cursor: pointer;
+  outline: none;
+}
+
+.product-card-btn:focus {
+  outline: 2px solid #1565c0;
+  outline-offset: 2px;
+}
+
+/* Estilos para la galería */
 .row {
   margin-top: 2rem;
 }
@@ -133,28 +178,9 @@ h2 {
   padding: 0.5rem;
 }
 
-.product-card {
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra alrededor de la tarjeta */
-}
-
-.product-card:hover {
-  transform: translateY(-10px); /* Levanta la tarjeta un poco al pasar el ratón */
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
-}
-
-/* Contenedor de la galería */
-.container {
-  background: linear-gradient(to right, #f3f4f6, #e2e8f0);
-  border-radius: 10px;
-  padding: 20px;
-}
-
-
-/* Carrito */
-
+/* Estilos para el carrito */
 .cart-main {
-  min-height: calc(100vh - 80px); /* Ajusta 80px si tu footer es más alto o más bajo */
+  min-height: calc(100vh - 80px); /* Altura mínima para ocupar pantalla completa menos footer */
   display: flex;
   flex-direction: column;
 }
@@ -168,12 +194,11 @@ h2 {
 }
 
 .empty-cart-img {
-  width: 150px; /* ajusta tamaño a gusto */
+  width: 150px;
   opacity: 0.6;
 }
 
-
-/* Responsive styles */
+/* Estilos responsivos */
 @media (max-width: 767px) {
   .hero {
     padding: 3rem 1rem;
@@ -193,27 +218,12 @@ h2 {
   }
 }
 
-/* Para mejorar el diseño en la galería con más columnas en pantallas grandes */
 @media (min-width: 768px) {
   .product-card {
     max-width: 350px;
   }
 }
 
-/* Ajustes para los botones de la galería */
-.product-card-btn {
-  background-color: #1e88e5;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.product-card-btn:hover {
-  background-color: #1565c0; /* Azul más oscuro */
-  cursor: pointer;
-}
 
 
 

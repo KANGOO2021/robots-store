@@ -1,10 +1,19 @@
 import { useParams, Link } from 'react-router-dom';
 
+/**
+ * Componente que muestra los detalles ampliados de un producto individual.
+ * Utiliza el parámetro de la URL para identificar el producto a mostrar.
+ *
+ * Props:
+ * - products: array de productos disponibles
+ */
 function ProductDetail({ products }) {
   const { id } = useParams();
 
+  // Busca el producto por su ID
   const product = products.find(p => p.id.toString() === id);
 
+  // Muestra mensaje si no se encuentra el producto
   if (!product) {
     return <div className="text-center mt-5">Producto no encontrado</div>;
   }
@@ -24,13 +33,13 @@ function ProductDetail({ products }) {
           />
         </div>
 
-        {/* Descripción del producto */}
+        {/* Descripción técnica detallada */}
         <div className="col-md-7">
           <p className="lead">{product.details}</p>
         </div>
       </div>
 
-      {/* Botón para volver */}
+      {/* Botón para regresar a la galería */}
       <div className="text-center mt-5">
         <Link to="/gallery" className="btn btn-outline-dark">
           ← Volver a la galería
@@ -41,6 +50,7 @@ function ProductDetail({ products }) {
 }
 
 export default ProductDetail;
+
 
 
 

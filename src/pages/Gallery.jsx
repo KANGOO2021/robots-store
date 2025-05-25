@@ -1,5 +1,6 @@
 import ProductCard from '../components/ProductCard';
 
+// Página que muestra el catálogo completo de robots y permite agregar productos al carrito
 function Gallery({ products, addToCart }) {
   return (
     <div className="container mt-4">
@@ -22,5 +23,6 @@ function Gallery({ products, addToCart }) {
 }
 
 export default Gallery;
+
 
 

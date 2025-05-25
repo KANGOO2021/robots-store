@@ -1,3 +1,4 @@
+// Página de inicio de Robots Store con presentación e invitación a explorar productos
 const Home = () => {
   return (
     <div className="container mt-5">

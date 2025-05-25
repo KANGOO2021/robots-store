@@ -1,7 +1,8 @@
+// Página de contacto con formulario para que los usuarios puedan enviar mensajes
 function Contact() {
   return (
     <div className="container mt-4 d-flex justify-content-center">
-      <div className="col-12 col-md-6"> {/* Ocupa el 100% en pantallas pequeñas, 50% en pantallas medianas y más grandes */}
+      <div className="col-12 col-md-6">
         <h2>Contacto</h2>
         <form>
           <div className="mb-3">
@@ -24,5 +25,6 @@ function Contact() {
 }
 
 export default Contact;
+
 
 
