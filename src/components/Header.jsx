@@ -1,21 +1,18 @@
 import Navbar from './Navbar';
 
-/**
- * Componente de encabezado que incluye la barra de navegación principal.
- * Recibe:
- * - cartItemCount: cantidad de productos en el carrito
- * - isAuthenticated: estado de autenticación del usuario
- */
-function Header({ cartItemCount, isAuthenticated }) {
+function Header({ cartItemCount, searchTerm, onSearch }) {
   return (
     <header>
-      <Navbar cartItemCount={cartItemCount} isAuthenticated={isAuthenticated} />
+      <Navbar 
+        cartItemCount={cartItemCount} 
+        searchTerm={searchTerm} 
+        onSearch={onSearch} 
+      />
     </header>
   );
 }
 
 export default Header;
-
 
 
 

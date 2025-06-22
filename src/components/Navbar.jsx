@@ -1,93 +1,201 @@
-import { NavLink } from "react-router-dom";
-import { FaShoppingCart } from "react-icons/fa";
-import robotLogo from "/robostore-favicon.png"; 
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { toast } from 'react-toastify';
+import { BiLogIn, BiLogOut } from 'react-icons/bi';
+import { useState } from 'react';
+import SearchBar from './SearchBar';
 
-/**
- * Barra de navegación principal del sitio.
- * Muestra enlaces a las diferentes páginas, el ícono del carrito con cantidad de ítems
- * y opciones de acceso según si el usuario está autenticado.
- *
- * Props:
- * - cartItemCount: número total de productos en el carrito
- * - isAuthenticated: booleano que indica si el usuario ha iniciado sesión
- */
-const Navbar = ({ cartItemCount, isAuthenticated }) => {
-  // Retorna clases CSS según si el enlace está activo o no
-  const getActiveClass = ({ isActive }) =>
-    isActive ? "nav-link active text-info" : "nav-link";
+function NavBar({ onSearch }) {
+  const { user, logout } = useAuth();
+  const { cart } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleLogout = () => {
+    logout();
+    toast.info('Sesión cerrada');
+    navigate('/');
+  };
+
+  const handleSearchChange = (value) => {
+    setSearchTerm(value);
+    onSearch && onSearch(value);
+  };
+
+  // Genera un color a partir de un string para el badge de usuario
+  const stringToColor = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const color =
+      '#' +
+      ((hash >> 24) & 0xff).toString(16).padStart(2, '0') +
+      ((hash >> 16) & 0xff).toString(16).padStart(2, '0') +
+      ((hash >> 8) & 0xff).toString(16).padStart(2, '0');
+    return color.length === 7 ? color : '#007bff';
+  };
+
+  const renderUserBadge = () => {
+    if (!user) return null;
+
+    if (user.role === 'admin') {
+      return <span className="badge bg-danger ms-2">Admin</span>;
+    } else {
+      const initial =
+        user.name?.charAt(0).toUpperCase() ||
+        user.email?.charAt(0).toUpperCase() ||
+        '?';
+      const bgColor = stringToColor(user.name || user.email || 'user');
+
+      return (
+        <div
+          className="ms-2 d-flex justify-content-center align-items-center text-white fw-bold"
+          style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            backgroundColor: bgColor,
+            fontSize: '0.9rem',
+          }}
+          title={user.name || user.email}
+        >
+          {initial}
+        </div>
+      );
+    }
+  };
+
+  const cartItemCount = cart.length;
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-      <img
-        className="me-3"
-        src={robotLogo}
-        alt="Robot Logo"
-        width="32"
-        height="32"
-      />
-      <NavLink className="navbar-brand" to="/">
-        Robots Store
-      </NavLink>
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">
+          Robots Store
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+          aria-controls="navMenu"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-      {/* Botón hamburguesa para vista móvil */}
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-
-      {/* Enlaces del menú de navegación */}
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ms-auto">
-          <li className="nav-item">
-            <NavLink className={getActiveClass} to="/">
-              Inicio
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className={getActiveClass} to="/gallery">
-              Galería
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className={getActiveClass} to="/contact">
-              Contacto
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className={getActiveClass} to="/cart">
-              <FaShoppingCart />{" "}
-              {/* Muestra el número de ítems en el carrito si hay al menos uno */}
-              {cartItemCount > 0 && (
-                <span className="badge bg-success">{cartItemCount}</span>
-              )}
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            {/* Si está autenticado, muestra "Admin"; si no, muestra "Login" */}
-            {isAuthenticated ? (
-              <NavLink className={getActiveClass} to="/admin">
-                Admin
-              </NavLink>
-            ) : (
-              <NavLink className={getActiveClass} to="/login">
-                Login
-              </NavLink>
+        <div className="collapse navbar-collapse" id="navMenu">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Inicio
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/gallery">
+                Productos
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/contact">
+                Contacto
+              </Link>
+            </li>
+            {user?.role === 'admin' && (
+              <li className="nav-item">
+                <Link className="nav-link text-danger fw-bold" to="/admin">
+                  ⚙ Panel
+                </Link>
+              </li>
             )}
-          </li>
-        </ul>
+          </ul>
+
+          {/* Mostrar buscador solo en /gallery */}
+          {location.pathname === '/gallery' && (
+            <div className="me-3">
+              <SearchBar
+                searchTerm={searchTerm}
+                onSearch={handleSearchChange}
+              />
+            </div>
+          )}
+
+          <ul className="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
+            {user && (
+              <li
+                className="nav-item me-2 position-relative"
+                style={{ minWidth: '40px' }}
+              >
+                <Link
+                  className="nav-link position-relative"
+                  to="/cart"
+                  style={{ fontSize: '1.4rem' }}
+                  title="Carrito"
+                >
+                  🛒
+                  {cartItemCount > 0 && (
+                    <span
+                      className="position-absolute badge rounded-pill bg-success"
+                      style={{
+                        top: '2px',
+                        right: '2px',
+                        transform: 'none',
+                        fontSize: '0.75rem',
+                        lineHeight: '1',
+                        padding: '0.25em 0.4em',
+                      }}
+                    >
+                      {cartItemCount}
+                    </span>
+                  )}
+                </Link>
+              </li>
+            )}
+
+            {!user ? (
+              <>
+                <li className="nav-item" title="Iniciar sesión">
+                  <Link className="nav-link" to="/login">
+                    <BiLogIn size={22} />
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    Registrarse
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item" title="Cerrar sesión">
+                  <button
+                    className="btn btn-outline-light btn-sm ms-2"
+                    onClick={handleLogout}
+                  >
+                    <BiLogOut size={20} />
+                  </button>
+                </li>
+                <li className="nav-item">{renderUserBadge()}</li>
+              </>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );
-};
+}
 
-export default Navbar;
+export default NavBar;
+
+
+
+
+
 
 
 

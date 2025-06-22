@@ -1,148 +1,88 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+// Pages
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import AdminProducts from './pages/AdminProducts';
+
+// Layout
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Login from './pages/Login';          
-import Admin from './pages/Admin';          
-import PrivateRoute from './auth/PrivateRoute';  
 
-// Función para calcular el total del carrito
-const calculateTotal = (cart) => {
-  return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-};
+// Context Providers
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+import { ProductProvider } from './context/ProductContext';
 
-// Componente principal de la aplicación
-function App() {
-  // Estado para productos cargados
-  const [products, setProducts] = useState([]);
+// Routes
+import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 
-  // Estado para carrito, con persistencia en localStorage
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+function AppContent() {
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Estado para controlar autenticación
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Carga los productos desde JSON local al montar el componente
-  useEffect(() => {
-    fetch('/data/products.json')
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((error) => console.error("Error al cargar los productos:", error));
-  }, []);
-
-  // Guarda el carrito en localStorage cada vez que cambia
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
-  // Agrega un producto al carrito (si no está ya)
-  const addToCart = (product) => {
-    const exists = cart.find((item) => item.id === product.id);
-    if (exists) {
-      toast.info(`Este producto ya está en el carrito.`);
-    } else {
-      if (typeof product.price !== 'number' || isNaN(product.price)) {
-        toast.error("Este producto no tiene un precio válido.");
-        return;
-      }
-      const newCart = [
-        ...cart,
-        {
-          id: product.id,
-          title: product.title,
-          price: product.price,
-          image: product.image,
-          quantity: 1,
-        },
-      ];
-      setCart(newCart);
-      toast.success(`${product.title} agregado al carrito.`);
-    }
-  };
-
-  // Cambia la cantidad de un producto en el carrito
-  const updateQuantity = (id, delta) => {
-    const newCart = cart.map((item) =>
-      item.id === id
-        ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-        : item
-    );
-    setCart(newCart);
-  };
-
-  // Elimina un producto del carrito
-  const removeFromCart = (id) => {
-    const item = cart.find((item) => item.id === id);
-    if (item) toast.warn(`${item.title} eliminado del carrito.`);
-    setCart(cart.filter((item) => item.id !== id));
-  };
-
-  // Vacía el carrito completo
-  const clearCart = () => {
-    setCart([]);
-    toast.info("El carrito fue vaciado.");
-  };
-
-  // Finaliza la compra (vacía carrito y notifica)
-  const finishPurchase = () => {
-    setCart([]);
-    toast.success("¡Compra finalizada con éxito!");
-  };
-
-  // Recibe el resultado del login desde el componente Login
-  const handleLogin = (loggedIn) => {
-    setIsAuthenticated(loggedIn);
+  const handleSearch = (term) => {
+    setSearchTerm(term);
   };
 
   return (
-    <Router>
-      <Header cartItemCount={cart.length} />
+    <>
+      <Header onSearch={handleSearch} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
           path="/gallery"
-          element={<Gallery products={products} addToCart={addToCart} cart={cart} />}
+          element={<Gallery searchTerm={searchTerm} />}
         />
         <Route path="/contact" element={<Contact />} />
         <Route
           path="/cart"
           element={
-            <Cart
-              cart={cart}
-              updateQuantity={updateQuantity}
-              removeFromCart={removeFromCart}
-              clearCart={clearCart}
-              finishPurchase={finishPurchase}
-              calculateTotal={() => calculateTotal(cart)}
-            />
+            <PrivateRoute>
+              <Cart />
+            </PrivateRoute>
           }
         />
-        <Route
-          path="/products/:id"
-          element={<ProductDetail products={products} addToCart={addToCart} />}
-        />
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/admin"
           element={
-            <PrivateRoute isAuth={isAuthenticated}>
-              <Admin />
-            </PrivateRoute>
+            <AdminRoute>
+              <AdminProducts />
+            </AdminRoute>
           }
         />
       </Routes>
       <Footer />
-      <ToastContainer position="bottom-right" autoClose={1000} hideProgressBar />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar
+      />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <ProductProvider>
+          <CartProvider>
+            <AppContent />
+          </CartProvider>
+        </ProductProvider>
+      </AuthProvider>
     </Router>
   );
 }

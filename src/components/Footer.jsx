@@ -1,6 +1,3 @@
-/**
- * Componente de pie de página (footer) que se muestra en todas las páginas.
- */
 function Footer() {
   return (
     <footer className="bg-dark text-white text-center p-3 mt-4">
@@ -10,6 +7,5 @@ function Footer() {
 }
 
 export default Footer;
-
 
 

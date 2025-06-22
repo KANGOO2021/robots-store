@@ -1,19 +1,20 @@
+import { useProduct } from '../context/ProductContext';
+import { useCart } from '../context/CartContext';
 import { useParams, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-/**
- * Componente que muestra los detalles ampliados de un producto individual.
- * Utiliza el parámetro de la URL para identificar el producto a mostrar.
- *
- * Props:
- * - products: array de productos disponibles
- */
-function ProductDetail({ products }) {
+function ProductDetail() {
   const { id } = useParams();
+  const { products } = useProduct();
+  const { addToCart } = useCart();
 
-  // Busca el producto por su ID
-  const product = products.find(p => p.id.toString() === id);
+  const product = products.find((p) => p.id.toString() === id);
 
-  // Muestra mensaje si no se encuentra el producto
+  // Forzar scroll al top al montar
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   if (!product) {
     return <div className="text-center mt-5">Producto no encontrado</div>;
   }
@@ -21,35 +22,76 @@ function ProductDetail({ products }) {
   return (
     <div className="container my-5">
       <h2 className="text-center mb-4">{product.title}</h2>
-
-      <div className="row align-items-start">
-        {/* Imagen del producto */}
-        <div className="col-md-5 text-center">
-          <img
-            src={product.image}
-            alt={product.title}
-            className="img-fluid rounded shadow"
-            style={{ maxHeight: '400px', objectFit: 'contain' }}
-          />
+      <div className="row">
+        {/* Imagen */}
+        <div className="col-md-5 d-flex justify-content-center align-items-start">
+          <div
+            className="w-100"
+            style={{
+              maxWidth: '400px',
+              height: '300px',
+              borderRadius: '0.5rem',
+              overflow: 'hidden',
+            }}
+          >
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-100 h-100"
+              style={{
+                objectFit: 'cover',
+                borderRadius: '0.5rem',
+              }}
+            />
+          </div>
         </div>
 
-        {/* Descripción técnica detallada */}
-        <div className="col-md-7">
-          <p className="lead">{product.details}</p>
-        </div>
-      </div>
+        {/* Detalle */}
+        <div className="col-md-7 d-flex flex-column justify-content-between">
+          <div>
+            <p
+              className="lead"
+              style={{
+                textAlign: 'justify',
+                overflowWrap: 'break-word',
+                wordBreak: 'break-word',
+              }}
+            >
+              {product.details || product.description}
+            </p>
+          </div>
 
-      {/* Botón para regresar a la galería */}
-      <div className="text-center mt-5">
-        <Link to="/gallery" className="btn btn-outline-dark">
-          ← Volver a la galería
-        </Link>
+          <div className="mt-auto text-center">
+            <h4 className="mb-3">${product.price.toFixed(2)}</h4>
+            <button
+              onClick={() => addToCart(product)}
+              className="btn btn-primary mb-3 px-4"
+              style={{ width: '50%' }}
+            >
+              Agregar al carrito
+            </button>
+            <div>
+              <Link to="/gallery" className="btn btn-outline-dark w-50">
+                ← Volver a la galería
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 export default ProductDetail;
+
+
+
+
+
+
+
+
+
 
 
 

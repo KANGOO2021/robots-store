@@ -1,19 +1,36 @@
-import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-// Componente para la pantalla de inicio de sesión con validación simple y notificaciones toast
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (email === "admin@admin.com" && password === "123") {
-      toast.success("Credenciales correctas.");
-    } else {
-      toast.error("Credenciales incorrectas.");
+    const success = login({ email, password });
+
+    if (!success) {
+      setError(
+        <>
+          Usuario o contraseña incorrectos. Por favor, <Link to="/register">regístrese aquí</Link> si no tiene cuenta.
+        </>
+      );
+      return;
+    }
+
+    setError('');
+
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+
+    if (currentUser.role === 'admin') {
+      navigate('/admin', { replace: true });
+    } else if (currentUser.role === 'user') {
+      navigate('/', { replace: true });  // Redirigir siempre al inicio
     }
   };
 
@@ -26,10 +43,10 @@ function Login() {
           <input
             type="email"
             className="form-control"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             required
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-3">
@@ -37,29 +54,29 @@ function Login() {
           <input
             type="password"
             className="form-control"
-            required
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
+            required
           />
         </div>
+
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+
         <button type="submit" className="btn btn-primary w-100">Ingresar</button>
       </form>
-
-      <ToastContainer
-        position="top-center"
-        autoClose={1500}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        pauseOnFocusLoss={false}
-        draggable={false}
-        pauseOnHover={false}
-      />
     </div>
   );
 }
 
 export default Login;
+
+
+
+
 
 
 
