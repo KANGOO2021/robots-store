@@ -9,19 +9,31 @@ export const CartProvider = ({ children }) => {
   const { user } = useAuth();
   const { decreaseStock, getProductById, products } = useProduct();
 
-  const [cart, setCart] = useState([]);
+  const storageKey = user?.id ? `cart_${user.id}` : 'cart_guest';
 
-  // Estado para controlar si se debe mostrar el toast "carrito vaciado"
+  const [cart, setCart] = useState(() => {
+    const stored = localStorage.getItem(storageKey);
+    return stored ? JSON.parse(stored) : [];
+  });
+
   const [showCartEmptyToast, setShowCartEmptyToast] = useState(false);
 
-  // Reinicia carrito cuando cambia usuario (sin toast)
+  // Cuando cambia el usuario, cargar carrito correspondiente
+ 
   useEffect(() => {
-    setCart([]);
+    const stored = localStorage.getItem(storageKey);
+    setCart(stored ? JSON.parse(stored) : []);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
-
-  // Sincroniza cantidades en carrito con stock actualizado (sin toast)
+//
+  // Guardar carrito en localStorage al cambiar
   useEffect(() => {
-    setCart((prevCart) =>
+    localStorage.setItem(storageKey, JSON.stringify(cart));
+  }, [cart, storageKey]);
+
+  // Ajustar cantidades cuando cambia el stock
+  useEffect(() => {
+    setCart(prevCart =>
       prevCart.map(item => {
         const product = getProductById(item.id);
         if (!product) return item;
@@ -29,6 +41,7 @@ export const CartProvider = ({ children }) => {
         return { ...item, quantity };
       })
     );
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
   const addToCart = (product) => {
@@ -84,18 +97,15 @@ export const CartProvider = ({ children }) => {
     setCart(prev => prev.filter(i => i.id !== id));
   };
 
-  // Vacía carrito sin mostrar ningún toast
   const clearCart = () => {
     setCart([]);
   };
 
-  // Vacía carrito y muestra toast "carrito vaciado"
   const emptyCartWithToast = () => {
     setShowCartEmptyToast(true);
     clearCart();
   };
 
-  // Efecto para mostrar el toast solo cuando showCartEmptyToast cambie a true
   useEffect(() => {
     if (showCartEmptyToast) {
       toast.info('El carrito fue vaciado.');
@@ -130,7 +140,7 @@ export const CartProvider = ({ children }) => {
         await decreaseStock(item.id, item.quantity);
       }
 
-      clearCart(); // sin toast, solo limpia carrito
+      clearCart();
       toast.success('¡Gracias por tu compra!');
     } catch (error) {
       toast.error('Error al finalizar la compra.');
@@ -145,8 +155,8 @@ export const CartProvider = ({ children }) => {
         addToCart,
         updateQuantity,
         removeFromCart,
-        clearCart,            // para limpiar sin toast (uso interno y compra)
-        emptyCartWithToast,   // para botón o vaciado manual con toast
+        clearCart,
+        emptyCartWithToast,
         calculateTotal,
         finishPurchase,
       }}
@@ -156,7 +166,9 @@ export const CartProvider = ({ children }) => {
   );
 };
 
+
 export const useCart = () => useContext(CartContext);
+
 
 
 

@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
 
 const ProductContext = createContext();
 
@@ -24,7 +23,7 @@ export const ProductProvider = ({ children }) => {
       setProducts(cleanProducts(data));
     } catch (error) {
       console.error('Error cargando productos:', error);
-      toast.error('Error al cargar productos');
+      // Podés poner toast aquí si querés, o manejarlo desde el componente
     }
   };
 
@@ -34,7 +33,7 @@ export const ProductProvider = ({ children }) => {
 
   const getProductById = (id) => products.find(p => p.id === id);
 
-  const updateProduct = async (updatedProduct, showToast = true, method = 'PUT') => {
+  const updateProduct = async (updatedProduct, method = 'PUT') => {
     try {
       const response = await fetch(`${API_URL}/${updatedProduct.id}`, {
         method,
@@ -49,11 +48,9 @@ export const ProductProvider = ({ children }) => {
         stock: Number(data.stock) || 0,
       };
       setProducts(prev => prev.map(p => (p.id === cleanData.id ? cleanData : p)));
-      if (showToast) toast.success('Producto actualizado');
       return cleanData;
     } catch (error) {
       console.error('Error:', error);
-      if (showToast) toast.error('Error al actualizar producto');
       throw error;
     }
   };
@@ -62,14 +59,14 @@ export const ProductProvider = ({ children }) => {
     const product = getProductById(id);
     if (!product) throw new Error('Producto no encontrado');
     const updatedStock = Math.max(product.stock - quantity, 0);
-    return updateProduct({ ...product, stock: updatedStock }, false, 'PUT');
+    return updateProduct({ ...product, stock: updatedStock }, 'PUT');
   };
 
   const increaseStock = async (id, quantity = 1) => {
     const product = getProductById(id);
     if (!product) throw new Error('Producto no encontrado');
     const updatedStock = product.stock + quantity;
-    return updateProduct({ ...product, stock: updatedStock }, false, 'PUT');
+    return updateProduct({ ...product, stock: updatedStock }, 'PUT');
   };
 
   return (
@@ -80,7 +77,7 @@ export const ProductProvider = ({ children }) => {
         updateProduct,
         decreaseStock,
         increaseStock,
-        fetchProducts,  // <-- Exponemos fetchProducts aquí
+        fetchProducts,
       }}
     >
       {children}
@@ -89,6 +86,7 @@ export const ProductProvider = ({ children }) => {
 };
 
 export const useProduct = () => useContext(ProductContext);
+
 
 
 

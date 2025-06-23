@@ -9,13 +9,18 @@ function SearchBar({ searchTerm, onSearch }) {
     <form
       className="d-flex me-3"
       role="search"
+      aria-label="Formulario de búsqueda de productos"
       onSubmit={(e) => e.preventDefault()}
     >
+      <label htmlFor="search-input" className="visually-hidden">
+        Buscar productos
+      </label>
       <input
+        id="search-input"
         className="form-control"
         type="search"
         placeholder="Buscar productos"
-        aria-label="Buscar"
+        aria-label="Buscar productos"
         value={searchTerm}
         onChange={handleChange}
       />
@@ -24,3 +29,4 @@ function SearchBar({ searchTerm, onSearch }) {
 }
 
 export default SearchBar;
+

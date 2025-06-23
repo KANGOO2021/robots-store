@@ -25,7 +25,6 @@ function NavBar({ onSearch }) {
     onSearch && onSearch(value);
   };
 
-  // Genera un color a partir de un string para el badge de usuario
   const stringToColor = (str) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -62,6 +61,8 @@ function NavBar({ onSearch }) {
             fontSize: '0.9rem',
           }}
           title={user.name || user.email}
+          aria-label={`Usuario: ${user.name || user.email}`}
+          role="img"
         >
           {initial}
         </div>
@@ -74,7 +75,11 @@ function NavBar({ onSearch }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link
+          className="navbar-brand"
+          to="/"
+          aria-current={location.pathname === '/' ? 'page' : undefined}
+        >
           Robots Store
         </Link>
         <button
@@ -92,36 +97,48 @@ function NavBar({ onSearch }) {
         <div className="collapse navbar-collapse" id="navMenu">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link" to="/">
+              <Link
+                className="nav-link"
+                to="/"
+                aria-current={location.pathname === '/' ? 'page' : undefined}
+              >
                 Inicio
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/gallery">
+              <Link
+                className="nav-link"
+                to="/gallery"
+                aria-current={location.pathname === '/gallery' ? 'page' : undefined}
+              >
                 Productos
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/contact">
+              <Link
+                className="nav-link"
+                to="/contact"
+                aria-current={location.pathname === '/contact' ? 'page' : undefined}
+              >
                 Contacto
               </Link>
             </li>
             {user?.role === 'admin' && (
               <li className="nav-item">
-                <Link className="nav-link text-danger fw-bold" to="/admin">
+                <Link
+                  className="nav-link text-danger fw-bold"
+                  to="/admin"
+                  aria-current={location.pathname === '/admin' ? 'page' : undefined}
+                >
                   ⚙ Panel
                 </Link>
               </li>
             )}
           </ul>
 
-          {/* Mostrar buscador solo en /gallery */}
           {location.pathname === '/gallery' && (
             <div className="me-3">
-              <SearchBar
-                searchTerm={searchTerm}
-                onSearch={handleSearchChange}
-              />
+              <SearchBar searchTerm={searchTerm} onSearch={handleSearchChange} />
             </div>
           )}
 
@@ -136,6 +153,7 @@ function NavBar({ onSearch }) {
                   to="/cart"
                   style={{ fontSize: '1.4rem' }}
                   title="Carrito"
+                  aria-label={`Carrito con ${cartItemCount} items`}
                 >
                   🛒
                   {cartItemCount > 0 && (
@@ -149,6 +167,8 @@ function NavBar({ onSearch }) {
                         lineHeight: '1',
                         padding: '0.25em 0.4em',
                       }}
+                      aria-live="polite"
+                      aria-atomic="true"
                     >
                       {cartItemCount}
                     </span>
@@ -157,27 +177,30 @@ function NavBar({ onSearch }) {
               </li>
             )}
 
-            {!user ? (
-              <>
-                <li className="nav-item" title="Iniciar sesión">
-                  <Link className="nav-link" to="/login">
-                    <BiLogIn size={22} />
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/register">
-                    Registrarse
-                  </Link>
-                </li>
-              </>
-            ) : (
+            {!user && location.pathname !== '/login' && location.pathname !== '/register' && (
+              <li className="nav-item" title="Iniciar sesión">
+                <Link
+                  className="btn btn-outline-light btn-sm d-flex align-items-center gap-1"
+                  to="/login"
+                  aria-label="Iniciar sesión rápidamente"
+                  style={{ padding: '0.25rem 0.75rem' }}
+                >
+                  <BiLogIn size={20} aria-hidden="true" />
+                </Link>
+              </li>
+            )}
+
+            {user && (
               <>
                 <li className="nav-item" title="Cerrar sesión">
                   <button
-                    className="btn btn-outline-light btn-sm ms-2"
+                    className="btn btn-outline-light btn-sm ms-2 d-flex align-items-center gap-1"
                     onClick={handleLogout}
+                    aria-label="Cerrar sesión"
+                    type="button"
+                    style={{ padding: '0.25rem 0.75rem' }}
                   >
-                    <BiLogOut size={20} />
+                    <BiLogOut size={20} aria-hidden="true" />
                   </button>
                 </li>
                 <li className="nav-item">{renderUserBadge()}</li>
@@ -191,6 +214,11 @@ function NavBar({ onSearch }) {
 }
 
 export default NavBar;
+
+
+
+
+
 
 
 

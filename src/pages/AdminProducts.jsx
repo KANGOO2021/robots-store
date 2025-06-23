@@ -1,126 +1,79 @@
 import { useAuth } from '../context/AuthContext';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useProduct } from '../context/ProductContext';
+import Swal from 'sweetalert2';
+import ProductFormModal from '../components/ProductFormModal';
+import { Helmet } from 'react-helmet';
 
 function AdminProducts() {
   const { user } = useAuth();
-  const { products, updateProduct, fetchProducts } = useProduct(); 
-  // Nota: agregué fetchProducts en contexto para recargar productos luego de POST.
+  const { products, updateProduct, fetchProducts } = useProduct();
 
   const [editingProduct, setEditingProduct] = useState(null);
-  const [form, setForm] = useState({
-    title: '',
-    description: '',
-    details: '',
-    price: '',
-    stock: '',
-    image: ''
-  });
+  const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    if (editingProduct) {
-      setForm({
-        title: editingProduct.title || '',
-        description: editingProduct.description || '',
-        details: editingProduct.details || '',
-        price: editingProduct.price !== undefined ? String(editingProduct.price) : '',
-        stock: editingProduct.stock !== undefined ? String(editingProduct.stock) : '',
-        image: editingProduct.image || ''
-      });
-    } else {
-      setForm({
-        title: '',
-        description: '',
-        details: '',
-        price: '',
-        stock: '',
-        image: ''
-      });
-    }
-  }, [editingProduct]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+  const openAddModal = () => {
+    setEditingProduct(null);
+    setModalVisible(true);
   };
 
-  // Función para crear producto (POST)
-  const createProduct = async (productData) => {
+  const openEditModal = (product) => {
+    setEditingProduct(product);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setEditingProduct(null);
+  };
+
+  const handleSave = async (productData) => {
     try {
-      const res = await fetch('https://683908066561b8d882aedb2b.mockapi.io/robots-product', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData)
-      });
-      if (!res.ok) throw new Error('Error al crear producto');
-      await fetchProducts();  // Actualiza productos desde el contexto
+      if (editingProduct) {
+        await updateProduct({ id: editingProduct.id, ...productData });
+        Swal.fire('¡Producto actualizado!', 'El producto ha sido modificado correctamente.', 'success');
+      } else {
+        const res = await fetch('https://683908066561b8d882aedb2b.mockapi.io/robots-product', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(productData)
+        });
+        if (!res.ok) throw new Error('Error al crear producto');
+        await fetchProducts();
+        Swal.fire('¡Producto agregado!', 'El producto ha sido agregado correctamente.', 'success');
+      }
+      closeModal();
+      await fetchProducts();
     } catch (error) {
       console.error(error);
-      alert('Error al crear el producto.');
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!form.title || !form.price || !form.stock) {
-      alert('Título, precio y stock son obligatorios');
-      return;
-    }
-
-    const productData = {
-      title: form.title,
-      description: form.description,
-      details: form.details,
-      price: parseFloat(form.price),
-      stock: parseInt(form.stock, 10),
-      image: form.image
-    };
-
-    try {
-      if (editingProduct?.id) {
-        await updateProduct({ id: editingProduct.id, ...productData });
-        setEditingProduct(null);
-      } else {
-        await createProduct(productData);
-      }
-
-      setForm({
-        title: '',
-        description: '',
-        details: '',
-        price: '',
-        stock: '',
-        image: ''
-      });
-    } catch (error) {
-      console.error('Error al guardar el producto:', error);
-      alert('Error al guardar el producto.');
-    }
-  };
-
-  const handleEdit = (product) => {
-    const exists = products.find(p => p.id === product.id);
-    if (exists) {
-      setEditingProduct(product);
-    } else {
-      alert('El producto ya no existe');
+      Swal.fire('Error', 'Error al guardar el producto.', 'error');
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('¿Seguro que deseas eliminar este producto?')) {
-      try {
-        await fetch(`https://683908066561b8d882aedb2b.mockapi.io/robots-product/${id}`, { method: 'DELETE' });
-        await fetchProducts();
-        if (editingProduct?.id === id) {
-          setEditingProduct(null);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará el producto permanentemente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await fetch(`https://683908066561b8d882aedb2b.mockapi.io/robots-product/${id}`, {
+            method: 'DELETE'
+          });
+          await fetchProducts();
+          Swal.fire('¡Eliminado!', 'El producto ha sido eliminado.', 'success');
+        } catch (error) {
+          console.error('Error al eliminar producto:', error);
+          Swal.fire('Error', 'No se pudo eliminar el producto. Revisa la consola.', 'error');
         }
-      } catch (error) {
-        console.error('Error al eliminar producto:', error);
-        alert('Error al eliminar producto. Revisa la consola.');
       }
-    }
+    });
   };
 
   if (!user) {
@@ -136,7 +89,22 @@ function AdminProducts() {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Panel de Administración de Productos</h2>
+      <Helmet>
+        <title>Admin | Gestión de Productos</title>
+        <meta name="description" content="Administra los productos disponibles en la tienda Robots Store. Agrega, edita o elimina productos fácilmente desde este panel." />
+      </Helmet>
+
+      <h2 className="text-center mb-4 d-flex justify-content-between align-items-center">
+        Panel de Administración de Productos
+        <button
+          className="btn btn-primary"
+          onClick={openAddModal}
+          aria-label="Agregar nuevo producto"
+        >
+          Nuevo Producto
+        </button>
+      </h2>
+
       <p className="text-success text-center">Bienvenido, {user.name}</p>
 
       <table className="table table-striped">
@@ -154,54 +122,50 @@ function AdminProducts() {
               <td>{prod.title}</td>
               <td>${prod.price.toFixed(2)}</td>
               <td>{prod.stock}</td>
-              <td>{prod.image ? (
-                <img src={prod.image} alt={prod.title} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
-              ) : 'Sin imagen'}</td>
               <td>
-                <button className="btn btn-sm btn-primary me-2" onClick={() => handleEdit(prod)}>Editar</button>
-                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(prod.id)}>Eliminar</button>
+                {prod.image ? (
+                  <img
+                    src={prod.image}
+                    alt={`Imagen de ${prod.title}`}
+                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                  />
+                ) : 'Sin imagen'}
+              </td>
+              <td>
+                <button
+                  className="btn btn-sm btn-primary me-2"
+                  onClick={() => openEditModal(prod)}
+                  aria-label={`Editar producto ${prod.title}`}
+                >
+                  Editar
+                </button>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => handleDelete(prod.id)}
+                  aria-label={`Eliminar producto ${prod.title}`}
+                >
+                  Eliminar
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <form onSubmit={handleSubmit} className="mt-4">
-        <h4>{editingProduct ? 'Editar producto' : 'Agregar nuevo producto'}</h4>
-        <div className="mb-3">
-          <label className="form-label">Título*</label>
-          <input type="text" className="form-control" name="title" value={form.title} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Descripción corta</label>
-          <textarea className="form-control" name="description" value={form.description} onChange={handleChange} rows={2} />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Detalles</label>
-          <textarea className="form-control" name="details" value={form.details} onChange={handleChange} rows={4} />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Precio*</label>
-          <input type="number" step="0.01" className="form-control" name="price" value={form.price} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Stock*</label>
-          <input type="number" className="form-control" name="stock" value={form.stock} onChange={handleChange} />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">URL Imagen</label>
-          <input type="text" className="form-control" name="image" value={form.image} onChange={handleChange} />
-        </div>
-        <button type="submit" className="btn btn-success me-2">{editingProduct ? 'Actualizar' : 'Agregar'}</button>
-        {editingProduct && (
-          <button type="button" className="btn btn-secondary" onClick={() => setEditingProduct(null)}>Cancelar</button>
-        )}
-      </form>
+      <ProductFormModal
+        show={modalVisible}
+        onClose={closeModal}
+        onSave={handleSave}
+        initialData={editingProduct}
+      />
     </div>
   );
 }
 
 export default AdminProducts;
+
+
+
 
 
 

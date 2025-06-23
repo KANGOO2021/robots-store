@@ -14,7 +14,7 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="card h-100 product-card">
+    <article className="card h-100 product-card" aria-label={`Producto ${product.title}`}>
       <img
         src={product.image}
         alt={product.title}
@@ -25,7 +25,10 @@ function ProductCard({ product }) {
         <div>
           <h5 className="card-title">{product.title}</h5>
           <p className="card-text">{product.description}</p>
-          <p className="text-center fw-bold text-dark">
+          <p 
+            className="text-center fw-bold text-dark"
+            aria-label={`Precio ${Number(product.price).toFixed(2)} dólares`}
+          >
             ${Number(product.price).toFixed(2)}
           </p>
         </div>
@@ -34,22 +37,30 @@ function ProductCard({ product }) {
             className="btn btn-dark w-100"
             onClick={handleAddToCart}
             disabled={product.stock === 0}
+            aria-disabled={product.stock === 0}
+            aria-label={
+              product.stock === 0
+                ? `${product.title} sin stock`
+                : `Agregar ${product.title} al carrito`
+            }
           >
             {product.stock === 0 ? 'Sin stock' : 'Agregar al carrito'}
           </button>
           <button
             className="btn btn-outline-dark w-100"
             onClick={handleViewMore}
+            aria-label={`Ver más detalles de ${product.title}`}
           >
             Ver Más
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
 export default ProductCard;
+
 
 
 

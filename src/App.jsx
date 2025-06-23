@@ -34,44 +34,47 @@ function AppContent() {
   };
 
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <Header onSearch={handleSearch} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/gallery"
-          element={<Gallery searchTerm={searchTerm} />}
-        />
-        <Route path="/contact" element={<Contact />} />
-        <Route
-          path="/cart"
-          element={
-            <PrivateRoute>
-              <Cart />
-            </PrivateRoute>
-          }
-        />
-        <Route path="/products/:id" element={<ProductDetail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/admin"
-          element={
-            <AdminRoute>
-              <AdminProducts />
-            </AdminRoute>
-          }
-        />
-      </Routes>
+      <main className="flex-grow-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/gallery"
+            element={<Gallery searchTerm={searchTerm} />}
+          />
+          <Route path="/contact" element={<Contact />} />
+          <Route
+            path="/cart"
+            element={
+              <PrivateRoute>
+                <Cart />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminProducts />
+              </AdminRoute>
+            }
+          />
+        </Routes>
+      </main>
       <Footer />
       <ToastContainer
         position="bottom-right"
         autoClose={1000}
         hideProgressBar
       />
-    </>
+    </div>
   );
 }
+
 
 function App() {
   return (
