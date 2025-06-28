@@ -13,11 +13,13 @@ function NavBar({ onSearch }) {
   const location = useLocation();
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [expanded, setExpanded] = useState(false);
 
   const handleLogout = () => {
     logout();
     toast.info('Sesión cerrada');
     navigate('/');
+    setExpanded(false);
   };
 
   const handleSearchChange = (value) => {
@@ -72,6 +74,11 @@ function NavBar({ onSearch }) {
 
   const cartItemCount = cart.length;
 
+  // Cierra menú al hacer clic en cualquier enlace del menú
+  const handleLinkClick = () => {
+    setExpanded(false);
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
       <div className="container-fluid">
@@ -79,28 +86,29 @@ function NavBar({ onSearch }) {
           className="navbar-brand"
           to="/"
           aria-current={location.pathname === '/' ? 'page' : undefined}
+          onClick={handleLinkClick}
         >
           Robots Store
         </Link>
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navMenu"
           aria-controls="navMenu"
-          aria-expanded="false"
+          aria-expanded={expanded}
           aria-label="Toggle navigation"
+          onClick={() => setExpanded(!expanded)}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navMenu">
+        <div className={`collapse navbar-collapse ${expanded ? 'show' : ''}`} id="navMenu">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link
                 className="nav-link"
                 to="/"
                 aria-current={location.pathname === '/' ? 'page' : undefined}
+                onClick={handleLinkClick}
               >
                 Inicio
               </Link>
@@ -110,6 +118,7 @@ function NavBar({ onSearch }) {
                 className="nav-link"
                 to="/gallery"
                 aria-current={location.pathname === '/gallery' ? 'page' : undefined}
+                onClick={handleLinkClick}
               >
                 Productos
               </Link>
@@ -119,6 +128,7 @@ function NavBar({ onSearch }) {
                 className="nav-link"
                 to="/contact"
                 aria-current={location.pathname === '/contact' ? 'page' : undefined}
+                onClick={handleLinkClick}
               >
                 Contacto
               </Link>
@@ -129,6 +139,7 @@ function NavBar({ onSearch }) {
                   className="nav-link text-danger fw-bold"
                   to="/admin"
                   aria-current={location.pathname === '/admin' ? 'page' : undefined}
+                  onClick={handleLinkClick}
                 >
                   ⚙ Panel
                 </Link>
@@ -144,16 +155,14 @@ function NavBar({ onSearch }) {
 
           <ul className="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
             {user && (
-              <li
-                className="nav-item me-2 position-relative"
-                style={{ minWidth: '40px' }}
-              >
+              <li className="nav-item me-2 position-relative" style={{ minWidth: '40px' }}>
                 <Link
                   className="nav-link position-relative"
                   to="/cart"
                   style={{ fontSize: '1.4rem' }}
                   title="Carrito"
                   aria-label={`Carrito con ${cartItemCount} items`}
+                  onClick={handleLinkClick}
                 >
                   🛒
                   {cartItemCount > 0 && (
@@ -177,18 +186,21 @@ function NavBar({ onSearch }) {
               </li>
             )}
 
-            {!user && location.pathname !== '/login' && location.pathname !== '/register' && (
-              <li className="nav-item" title="Iniciar sesión">
-                <Link
-                  className="btn btn-outline-light btn-sm d-flex align-items-center gap-1"
-                  to="/login"
-                  aria-label="Iniciar sesión rápidamente"
-                  style={{ padding: '0.25rem 0.75rem' }}
-                >
-                  <BiLogIn size={20} aria-hidden="true" />
-                </Link>
-              </li>
-            )}
+            {!user &&
+              location.pathname !== '/login' &&
+              location.pathname !== '/register' && (
+                <li className="nav-item" title="Iniciar sesión">
+                  <Link
+                    className="btn btn-outline-light btn-sm d-flex align-items-center gap-1"
+                    to="/login"
+                    aria-label="Iniciar sesión rápidamente"
+                    style={{ padding: '0.25rem 0.75rem' }}
+                    onClick={handleLinkClick}
+                  >
+                    <BiLogIn size={20} aria-hidden="true" />
+                  </Link>
+                </li>
+              )}
 
             {user && (
               <>
@@ -214,6 +226,8 @@ function NavBar({ onSearch }) {
 }
 
 export default NavBar;
+
+
 
 
 

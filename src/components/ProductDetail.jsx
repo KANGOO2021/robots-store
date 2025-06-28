@@ -4,20 +4,31 @@ import { useParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
+/**
+ * Componente que muestra los detalles de un producto seleccionado.
+ * Permite agregarlo al carrito y volver a la galería.
+ */
 function ProductDetail() {
   const { id } = useParams();
-  const { products } = useProduct();
+  const { getProductById } = useProduct();
   const { addToCart } = useCart();
 
-  const product = products.find((p) => p.id.toString() === id);
+  // Busca el producto por su ID desde el contexto de productos
+  const product = getProductById(id);
 
-  // Forzar scroll al top al montar
+  /**
+   * Al montar el componente, se hace scroll al inicio de la página.
+   */
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   if (!product) {
-    return <div className="text-center mt-5" role="alert" aria-live="assertive">Producto no encontrado</div>;
+    return (
+      <div className="text-center mt-5" role="alert" aria-live="assertive">
+        Producto no encontrado
+      </div>
+    );
   }
 
   return (
@@ -33,7 +44,7 @@ function ProductDetail() {
       <main className="container my-5" role="main" aria-label={`Detalle del producto ${product.title}`}>
         <h2 className="text-center mb-4">{product.title}</h2>
         <div className="row">
-          {/* Imagen */}
+          {/* Imagen del producto */}
           <div className="col-md-5 d-flex justify-content-center align-items-start">
             <div
               className="w-100"
@@ -56,7 +67,7 @@ function ProductDetail() {
             </div>
           </div>
 
-          {/* Detalle */}
+          {/* Información del producto */}
           <div className="col-md-7 d-flex flex-column justify-content-between">
             <div>
               <p
@@ -97,6 +108,8 @@ function ProductDetail() {
 }
 
 export default ProductDetail;
+
+
 
 
 

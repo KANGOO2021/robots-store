@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Barra de búsqueda reutilizable.
+ * Recibe el término de búsqueda y una función para actualizarlo.
+ */
 function SearchBar({ searchTerm, onSearch }) {
   const handleChange = (e) => {
     onSearch(e.target.value);
@@ -29,4 +33,5 @@ function SearchBar({ searchTerm, onSearch }) {
 }
 
 export default SearchBar;
+
 

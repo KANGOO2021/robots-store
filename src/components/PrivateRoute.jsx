@@ -2,7 +2,10 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Solo permite el acceso a usuarios logueados
+/**
+ * Componente que protege rutas privadas de la aplicación.
+ * Redirige al login si el usuario no está autenticado.
+ */
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
   const location = useLocation();
@@ -15,5 +18,6 @@ const PrivateRoute = ({ children }) => {
 };
 
 export default PrivateRoute;
+
 
 

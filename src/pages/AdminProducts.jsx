@@ -9,24 +9,36 @@ function AdminProducts() {
   const { user } = useAuth();
   const { products, updateProduct, fetchProducts } = useProduct();
 
+  // Estado para producto que se está editando, o null para agregar nuevo producto
   const [editingProduct, setEditingProduct] = useState(null);
+  // Estado para controlar visibilidad del modal de formulario
   const [modalVisible, setModalVisible] = useState(false);
 
+  // Abre modal para agregar nuevo producto (sin datos pre-cargados)
   const openAddModal = () => {
     setEditingProduct(null);
     setModalVisible(true);
   };
 
+  // Abre modal para editar un producto, pasando datos actuales
   const openEditModal = (product) => {
     setEditingProduct(product);
     setModalVisible(true);
   };
 
+  // Cierra modal y limpia el producto en edición
   const closeModal = () => {
     setModalVisible(false);
     setEditingProduct(null);
   };
 
+  /**
+   * Maneja la acción de guardar producto (agregar o actualizar).
+   * - Si se está editando, actualiza producto con updateProduct.
+   * - Si es nuevo, realiza POST al endpoint mockapi y recarga productos.
+   * Muestra alertas con SweetAlert para éxito o error.
+   * @param {object} productData - Datos del producto desde el formulario
+   */
   const handleSave = async (productData) => {
     try {
       if (editingProduct) {
@@ -50,6 +62,12 @@ function AdminProducts() {
     }
   };
 
+  /**
+   * Maneja la eliminación de un producto con confirmación modal.
+   * - Si confirma, realiza DELETE y recarga productos.
+   * - Muestra alertas para éxito o error.
+   * @param {string|number} id - ID del producto a eliminar
+   */
   const handleDelete = async (id) => {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -76,6 +94,7 @@ function AdminProducts() {
     });
   };
 
+  // Si no hay usuario logueado, o no es admin, se muestra mensaje de acceso denegado
   if (!user) {
     return (
       <div className="container mt-5">
@@ -87,6 +106,7 @@ function AdminProducts() {
     );
   }
 
+  // Vista principal del panel con listado de productos y botones para CRUD
   return (
     <div className="container mt-5">
       <Helmet>
@@ -163,6 +183,7 @@ function AdminProducts() {
 }
 
 export default AdminProducts;
+
 
 
 

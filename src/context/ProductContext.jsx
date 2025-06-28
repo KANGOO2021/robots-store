@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const ProductContext = createContext();
-
 const API_URL = 'https://683908066561b8d882aedb2b.mockapi.io/robots-product';
 
+/**
+ * Limpia los datos crudos de productos: convierte `price` y `stock` a número.
+ */
 const cleanProducts = (products) =>
   products.map(product => ({
     ...product,
@@ -11,10 +13,15 @@ const cleanProducts = (products) =>
     stock: Number(product.stock) || 0,
   }));
 
+/**
+ * Proveedor de contexto de productos: maneja estado y funciones globales.
+ */
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
 
-  // Extraemos fetchProducts para poder llamarlo desde fuera
+  /**
+   * Obtiene productos desde la API y los limpia.
+   */
   const fetchProducts = async () => {
     try {
       const response = await fetch(API_URL);
@@ -23,7 +30,7 @@ export const ProductProvider = ({ children }) => {
       setProducts(cleanProducts(data));
     } catch (error) {
       console.error('Error cargando productos:', error);
-      // Podés poner toast aquí si querés, o manejarlo desde el componente
+      // Se puede manejar con toast desde el componente
     }
   };
 
@@ -31,8 +38,15 @@ export const ProductProvider = ({ children }) => {
     fetchProducts();
   }, []);
 
-  const getProductById = (id) => products.find(p => p.id === id);
+  /**
+   * Devuelve un producto por su ID.
+   * El ID se compara como string por compatibilidad con useParams().
+   */
+  const getProductById = (id) => products.find(p => p.id.toString() === id.toString());
 
+  /**
+   * Actualiza un producto en la API (PUT o PATCH).
+   */
   const updateProduct = async (updatedProduct, method = 'PUT') => {
     try {
       const response = await fetch(`${API_URL}/${updatedProduct.id}`, {
@@ -55,6 +69,9 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Disminuye el stock de un producto y actualiza en la API.
+   */
   const decreaseStock = async (id, quantity = 1) => {
     const product = getProductById(id);
     if (!product) throw new Error('Producto no encontrado');
@@ -62,6 +79,9 @@ export const ProductProvider = ({ children }) => {
     return updateProduct({ ...product, stock: updatedStock }, 'PUT');
   };
 
+  /**
+   * Aumenta el stock de un producto y actualiza en la API.
+   */
   const increaseStock = async (id, quantity = 1) => {
     const product = getProductById(id);
     if (!product) throw new Error('Producto no encontrado');
@@ -85,7 +105,11 @@ export const ProductProvider = ({ children }) => {
   );
 };
 
+/**
+ * Hook personalizado para acceder al contexto de productos.
+ */
 export const useProduct = () => useContext(ProductContext);
+
 
 
 

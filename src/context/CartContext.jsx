@@ -9,8 +9,10 @@ export const CartProvider = ({ children }) => {
   const { user } = useAuth();
   const { decreaseStock, getProductById, products } = useProduct();
 
+  // Clave para almacenar el carrito en localStorage según el usuario actual
   const storageKey = user?.id ? `cart_${user.id}` : 'cart_guest';
 
+  // Estado del carrito, inicializado desde localStorage si existe
   const [cart, setCart] = useState(() => {
     const stored = localStorage.getItem(storageKey);
     return stored ? JSON.parse(stored) : [];
@@ -18,20 +20,26 @@ export const CartProvider = ({ children }) => {
 
   const [showCartEmptyToast, setShowCartEmptyToast] = useState(false);
 
-  // Cuando cambia el usuario, cargar carrito correspondiente
- 
+  /**
+   * Al cambiar el usuario, carga el carrito almacenado correspondiente.
+   */
   useEffect(() => {
     const stored = localStorage.getItem(storageKey);
     setCart(stored ? JSON.parse(stored) : []);
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
-//
-  // Guardar carrito en localStorage al cambiar
+
+  /**
+   * Guarda el carrito en localStorage cada vez que cambia.
+   */
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(cart));
   }, [cart, storageKey]);
 
-  // Ajustar cantidades cuando cambia el stock
+  /**
+   * Ajusta las cantidades del carrito para que no superen el stock actual.
+   * Se ejecuta cuando cambian los productos o su stock.
+   */
   useEffect(() => {
     setCart(prevCart =>
       prevCart.map(item => {
@@ -41,9 +49,13 @@ export const CartProvider = ({ children }) => {
         return { ...item, quantity };
       })
     );
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
+  /**
+   * Agrega un producto al carrito.
+   * Verifica que el usuario esté logueado, que el producto tenga stock y que no esté repetido.
+   */
   const addToCart = (product) => {
     if (!user) {
       toast.error('Debés iniciar sesión para agregar productos al carrito.');
@@ -74,6 +86,12 @@ export const CartProvider = ({ children }) => {
     toast.success(`${product.title} agregado al carrito.`);
   };
 
+  /**
+   * Actualiza la cantidad de un producto en el carrito.
+   * La cantidad no puede ser menor a 1 ni mayor al stock disponible.
+   * @param {number} id - ID del producto
+   * @param {number} delta - Incremento o decremento de la cantidad
+   */
   const updateQuantity = (id, delta) => {
     setCart(prev =>
       prev.map(item => {
@@ -91,21 +109,35 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  /**
+   * Elimina un producto del carrito.
+   * Muestra toast con nombre del producto eliminado.
+   * @param {number} id - ID del producto a eliminar
+   */
   const removeFromCart = (id) => {
     const item = cart.find(i => i.id === id);
     if (item) toast.warn(`${item.title} eliminado del carrito.`);
     setCart(prev => prev.filter(i => i.id !== id));
   };
 
+  /**
+   * Vacía completamente el carrito sin notificación.
+   */
   const clearCart = () => {
     setCart([]);
   };
 
+  /**
+   * Vacía el carrito y muestra toast notificando el vaciado.
+   */
   const emptyCartWithToast = () => {
     setShowCartEmptyToast(true);
     clearCart();
   };
 
+  /**
+   * Efecto para mostrar toast cuando el carrito se vacía con notificación.
+   */
   useEffect(() => {
     if (showCartEmptyToast) {
       toast.info('El carrito fue vaciado.');
@@ -113,10 +145,21 @@ export const CartProvider = ({ children }) => {
     }
   }, [showCartEmptyToast]);
 
+  /**
+   * Calcula el total del carrito sumando precio * cantidad de cada producto.
+   * Se memoiza para optimizar rendimiento.
+   * @returns {number} Total del carrito
+   */
   const calculateTotal = useCallback(() => {
     return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }, [cart]);
 
+  /**
+   * Finaliza la compra:
+   * - Verifica stock disponible para cada producto
+   * - Descuenta stock en ProductContext
+   * - Limpia el carrito y muestra mensajes de éxito o error
+   */
   const finishPurchase = async () => {
     if (cart.length === 0) {
       toast.warn('El carrito está vacío');
@@ -166,8 +209,8 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-
 export const useCart = () => useContext(CartContext);
+
 
 
 

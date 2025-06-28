@@ -10,6 +10,12 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  /**
+   * Maneja el envío del formulario de login.
+   * Intenta autenticar con email y contraseña.
+   * Si falla, muestra un mensaje de error.
+   * Si tiene éxito, redirige según el rol del usuario.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -24,8 +30,10 @@ function Login() {
       return;
     }
 
+    // Limpia el error si el login fue exitoso
     setError('');
 
+    // Obtiene el usuario actual para redirigir según su rol
     const currentUser = JSON.parse(localStorage.getItem('user'));
 
     if (currentUser.role === 'admin') {
@@ -104,6 +112,7 @@ function Login() {
 }
 
 export default Login;
+
 
 
 

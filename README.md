@@ -1,40 +1,79 @@
-
 # Robots Store
 
 ## Descripción del Proyecto
 
-Robots Store es un e-commerce moderno especializado en la venta de productos de robótica. Desarrollado con React JS y Vite, ofrece una experiencia fluida y atractiva.
+Robots Store es un e-commerce moderno especializado en la venta de productos de robótica. Desarrollado con React JS y Vite, ofrece una experiencia fluida y atractiva con funcionalidades avanzadas para usuarios y administradores.
 
-Funcionalidades principales:
+### Funcionalidades principales:
 
-- Navegación entre páginas: Inicio, Galería, Contacto, Carrito, Login.
+- Navegación entre páginas: Inicio, Galería, Contacto, Detalle de Producto, Carrito, Login, Registro y Administración.
 - Visualización detallada de productos con opción de agregar al carrito.
-- Gestión completa del carrito: agregar, modificar cantidades, eliminar y finalizar compra.
-- Sistema de autenticación simple para la sección de administración.
-- Notificaciones tipo toast para informar acciones importantes.
-- Diseño responsive con Bootstrap y CSS personalizado.
+- Gestión completa del carrito: agregar, modificar cantidades, eliminar productos, vaciar carrito y finalizar compra, 
+  con validación de stock. 
+- Sistema de autenticación simple sin backend, basado en `localStorage`, con roles `admin` y `user`.
+- Panel administrativo para agregar, editar y eliminar productos mediante formularios modales.
+- Notificaciones tipo toast (React Toastify) y confirmaciones con SweetAlert2 para acciones importantes.
+- Diseño responsive y accesible, usando Bootstrap 5 y CSS personalizado con variables y soporte para modo claro/oscuro.
+- Estado global manejado con React Context API: autenticación, productos y carrito, con persistencia local.
+- Rutas protegidas para acceso restringido a usuarios autenticados y administradores.
+- SEO dinámico con React Helmet para cada página.
+
+---
 
 ## Estructura del Proyecto
 
-- `/pages`: páginas principales (Home, Gallery, Contact, Login, Admin).
-- `/components`: componentes reutilizables (Header, Navbar, Footer, Cart, ProductDetail, ProductCard, PrivateRoute).
-- Estado global (productos, carrito, autenticación) gestionado en `App.jsx`.
-- Productos cargados desde `/data/products.json`.
+- `/pages`: páginas principales  
+  - Home.jsx  
+  - Gallery.jsx  
+  - Contact.jsx  
+  - ProductDetail.jsx  
+  - Cart.jsx  
+  - Login.jsx  
+  - Register.jsx  
+  - AdminProducts.jsx  
+
+- `/components`: componentes reutilizables  
+  - Header.jsx, Footer.jsx, ProductCard.jsx, ProductFormModal.jsx  
+  - PrivateRoute.jsx, AdminRoute.jsx  
+  - Cart.jsx, ProductDetail.jsx  
+
+- `/context`: contextos para estado global  
+  - AuthContext.jsx (autenticación y usuarios)  
+  - ProductContext.jsx (productos y stock)  
+  - CartContext.jsx (carrito y lógica de compra)  
+
+- `/public`: recursos estáticos (favicon, imágenes)
+
+- `/App.jsx`: componente principal que configura rutas y layout
+
+- `/main.jsx`: punto de entrada que renderiza la app
+
+- `/App.css`: estilos globales con Bootstrap y CSS personalizado
+
+---
 
 ## Tecnologías Utilizadas
 
-- React.js con React Router DOM.
-- Bootstrap y CSS personalizado.
-- React Toastify para notificaciones.
-- Vite para construcción y desarrollo.
+- React 18 con React Router DOM v6  
+- Bootstrap 5 para diseño responsivo  
+- React Toastify para notificaciones toast  
+- SweetAlert2 para modales y confirmaciones  
+- React Helmet para SEO y metadatos dinámicos  
+- Vite para construcción, desarrollo rápido y hot reload  
+- Context API para manejo de estado global sin Redux  
+- LocalStorage para persistencia local de usuarios y carrito
+
+---
 
 ## Funcionalidades Destacadas
 
-- Añadir productos al carrito con validación y prevención de duplicados.
-- Modificar cantidades y eliminar productos con confirmación visual.
-- Vaciar carrito y finalizar compra con mensajes confirmatorios.
-- Acceso protegido a administración mediante `PrivateRoute`.
-- Persistencia del carrito en `localStorage`.
+- **Carrito inteligente:** controla stock, previene duplicados, permite cambiar cantidades y elimina productos.  
+- **Persistencia local:** usuarios, sesión y carrito almacenados en `localStorage` para mantener estado entre sesiones.  
+- **Roles y permisos:** acceso restringido para administración y funcionalidades exclusivas para usuarios autenticados.  
+- **Administración completa:** panel CRUD para productos con modales, validaciones y actualización instantánea.  
+- **Notificaciones y accesibilidad:** mensajes claros con toasts y alertas, además de buenas prácticas ARIA en formularios.  
+- **Búsqueda con normalización:** búsqueda en galería que ignora mayúsculas, tildes y espacios para mejor experiencia.  
+- **SEO:** cada página con títulos y descripciones dinámicas para mejor posicionamiento.
 
 ---
 

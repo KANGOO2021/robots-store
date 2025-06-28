@@ -1,5 +1,8 @@
 import { Helmet } from 'react-helmet';
 
+/**
+ * Página principal con presentación y valores de Robots Store.
+ */
 const Home = () => {
   return (
     <div className="container mt-5" aria-label="Página de inicio de Robots Store">
@@ -59,6 +62,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 

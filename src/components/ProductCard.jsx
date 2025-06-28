@@ -1,14 +1,24 @@
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
+/**
+ * Componente que representa una tarjeta de producto individual.
+ * Permite ver información del producto, agregarlo al carrito o ver más detalles.
+ */
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
+  /**
+   * Agrega el producto actual al carrito.
+   */
   const handleAddToCart = () => {
     addToCart(product);
   };
 
+  /**
+   * Redirige a la vista de detalle del producto.
+   */
   const handleViewMore = () => {
     navigate(`/products/${product.id}`);
   };
@@ -60,6 +70,7 @@ function ProductCard({ product }) {
 }
 
 export default ProductCard;
+
 
 
 

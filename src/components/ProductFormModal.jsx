@@ -2,6 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 import { Modal } from 'bootstrap';
 
+/**
+ * Modal que permite agregar o editar un producto.
+ * Se controla desde el exterior con props `show`, `onClose`, `onSave` e `initialData`.
+ */
 export default function ProductFormModal({ show, onClose, onSave, initialData = null }) {
   const [form, setForm] = useState({
     title: '',
@@ -15,6 +19,10 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
   const modalRef = useRef(null);
   const bsModal = useRef(null);
 
+  /**
+   * Inicializa o actualiza el estado del modal Bootstrap
+   * cuando cambia la prop `show`.
+   */
   useEffect(() => {
     if (!bsModal.current) {
       bsModal.current = new Modal(modalRef.current, {
@@ -30,6 +38,9 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
     }
   }, [show]);
 
+  /**
+   * Cuando cambian los datos iniciales, los carga en el formulario.
+   */
   useEffect(() => {
     if (initialData) {
       setForm({
@@ -52,11 +63,17 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
     }
   }, [initialData]);
 
+  /**
+   * Maneja el cambio de cualquier campo del formulario.
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Valida y envía el formulario al hacer submit.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.title || !form.price || !form.stock) {
@@ -70,6 +87,9 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
     });
   };
 
+  /**
+   * Cierra el modal manualmente y notifica al componente padre.
+   */
   const handleClose = () => {
     bsModal.current.hide();
     onClose();
@@ -187,5 +207,6 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
     </div>
   );
 }
+
 
 

@@ -4,6 +4,11 @@ import { useProduct } from '../context/ProductContext';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 
+/**
+ * Componente que representa el carrito de compras.
+ * Permite visualizar los productos agregados, modificar cantidades,
+ * vaciar el carrito o finalizar la compra.
+ */
 function Cart() {
   const {
     cart,
@@ -15,6 +20,10 @@ function Cart() {
 
   const { decreaseStock, getProductById } = useProduct();
 
+  /**
+   * Finaliza la compra si el carrito tiene productos válidos.
+   * Verifica stock disponible, actualiza el inventario y vacía el carrito.
+   */
   const finishPurchase = async () => {
     if (cart.length === 0) {
       toast.warn('El carrito está vacío');
@@ -40,7 +49,7 @@ function Cart() {
       toast.success('¡Gracias por tu compra!');
     } catch (error) {
       toast.error('Ocurrió un error al finalizar la compra.');
-      console.error(error);
+      console.error('Error al finalizar la compra:', error); // Se deja para depuración durante desarrollo
     }
   };
 
@@ -65,10 +74,7 @@ function Cart() {
               alt="Carrito vacío"
               className="empty-cart-img"
             />
-            <Link
-              to="/gallery"
-              className="btn btn-dark btn-lg mt-3 explore-btn"
-            >
+            <Link to="/gallery" className="btn btn-dark btn-lg mt-3 explore-btn">
               Ir a la Galería y seguir comprando
             </Link>
           </div>
@@ -109,7 +115,9 @@ function Cart() {
                     >
                       -
                     </button>
-                    <span className="mx-2" aria-live="polite" aria-atomic="true">{item.quantity}</span>
+                    <span className="mx-2" aria-live="polite" aria-atomic="true">
+                      {item.quantity}
+                    </span>
                     <button
                       className="btn btn-outline-secondary ms-2"
                       onClick={() => {
@@ -138,10 +146,13 @@ function Cart() {
 
             <div className="d-flex justify-content-between align-items-center mt-4">
               <h4>
-                Total: <span className="text-success">${calculateTotal().toFixed(2)}</span>
+                Total:{' '}
+                <span className="text-success">
+                  ${calculateTotal().toFixed(2)}
+                </span>
               </h4>
               <div className="d-flex gap-3">
-                <button className="btn btn-outline-danger" onClick={() => clearCart()}>
+                <button className="btn btn-outline-danger" onClick={clearCart}>
                   Vaciar Carrito
                 </button>
                 <button className="btn btn-success" onClick={finishPurchase}>
@@ -157,6 +168,7 @@ function Cart() {
 }
 
 export default Cart;
+
 
 
 

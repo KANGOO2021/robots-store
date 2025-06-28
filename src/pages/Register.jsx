@@ -3,15 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Helmet } from 'react-helmet';
 
+/**
+ * Componente para el formulario de registro de nuevos usuarios.
+ * Permite crear una cuenta con nombre, email y contraseña.
+ */
 function Register() {
   const { register } = useAuth();
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate();
 
+  // Actualiza los campos del formulario conforme el usuario escribe
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Envía el formulario y registra al usuario con rol 'user'
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -97,6 +103,7 @@ function Register() {
 }
 
 export default Register;
+
 
 
 

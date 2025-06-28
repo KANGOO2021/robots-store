@@ -8,21 +8,24 @@ const LOGGED_USER_KEY = 'user';
 const ADMIN_FLAG_KEY = 'admin_initialized';
 
 export const AuthProvider = ({ children }) => {
+  // Estado del usuario actual, cargado desde localStorage si existe
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem(LOGGED_USER_KEY);
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
+  // Obtiene el array de usuarios guardado en localStorage
   const getUsers = () => {
     const users = localStorage.getItem(USERS_STORAGE_KEY);
     return users ? JSON.parse(users) : [];
   };
 
+  // Guarda el array de usuarios actualizado en localStorage
   const saveUsers = (users) => {
     localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
   };
 
-  // ✅ Crear admin solo una vez al iniciar
+  // Crea el usuario administrador la primera vez que se monta el contexto
   useEffect(() => {
     const hasInitialized = localStorage.getItem(ADMIN_FLAG_KEY);
 
@@ -42,15 +45,16 @@ export const AuthProvider = ({ children }) => {
         };
         users.push(adminUser);
         saveUsers(users);
-        console.log('✅ Usuario admin creado automáticamente');
-      } else {
-        console.log('ℹ️ Admin ya existente. No se vuelve a crear.');
       }
 
       localStorage.setItem(ADMIN_FLAG_KEY, 'true');
     }
   }, []);
 
+  /**
+   * Registra un nuevo usuario.
+   * Retorna true si el registro fue exitoso, false si el email ya existe.
+   */
   const register = ({ name, email, password, role }) => {
     const users = getUsers();
 
@@ -72,13 +76,16 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
+  /**
+   * Intenta iniciar sesión con email y contraseña.
+   * Retorna true si las credenciales son válidas, false en caso contrario.
+   */
   const login = ({ email, password }) => {
     const users = getUsers();
 
     const foundUser = users.find(u => u.email === email && u.password === password);
 
     if (!foundUser) {
-      // No mostrar toast aquí para error de login
       return false;
     }
 
@@ -88,11 +95,13 @@ export const AuthProvider = ({ children }) => {
     return true;
   };
 
+  // Cierra sesión eliminando el usuario del estado y localStorage
   const logout = () => {
     setUser(null);
     localStorage.removeItem(LOGGED_USER_KEY);
   };
 
+  // Role del usuario actual, por defecto 'guest' si no está logueado
   const role = user?.role || 'guest';
 
   return (
@@ -102,7 +111,9 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Hook para acceder fácilmente al contexto de autenticación
 export const useAuth = () => useContext(AuthContext);
+
 
 
 

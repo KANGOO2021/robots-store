@@ -1,69 +1,105 @@
-/* App.css */
+/* Variables globales - colores, tipografías, tamaños */
+:root {
+  /* Colores principales */
+  --color-primary: #39FF14;
+  --color-primary-dark: #1565c0;
+  --color-primary-hover: #535bf2;
+  --color-bg-light: #f8f9fa;
+  --color-bg-gradient-start: #f3f4f6;
+  --color-bg-gradient-end: #e2e8f0;
+  --color-text-dark: #333333;
+  --color-text-muted: #757575;
+  --color-text-muted-dark: #2c3e50;
+  --color-navbar-bg: #343a40;
+  --color-btn-bg: #1e88e5;
+  --color-btn-bg-hover: #1565c0;
+  --color-white: #fff;
+
+  /* Tipografía */
+  --font-family-base: 'Arial', sans-serif;
+
+  /* Tamaños */
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 2rem;
+  --font-size-lead: 1.2rem;
+  --font-size-small: 0.875rem; /* 14px */
+
+  /* Bordes y radios */
+  --border-radius-base: 10px;
+  --btn-border-radius: 5px;
+
+  /* Sombra */
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.2);
+
+  /* Transiciones */
+  --transition-fast: 0.25s ease;
+}
+
+/* Reset y globales básicos */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
 }
 
-
-/* Estilos generales */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f8f9fa;
-  margin: 0;
-  padding: 0;
-}
-
+/* Contenedor principal */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  background: linear-gradient(to right, #f3f4f6, #e2e8f0);
-  border-radius: 10px;
+  background: linear-gradient(to right, var(--color-bg-gradient-start), var(--color-bg-gradient-end));
+  border-radius: var(--border-radius-base);
   padding: 20px;
 }
 
+/* Tipografías */
 h1, h2 {
-  color: #333;
+  color: var(--color-text-dark);
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: var(--font-size-h1);
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: var(--font-size-h2);
 }
 
 .lead {
-  font-size: 1.2rem;
+  font-size: var(--font-size-lead);
 }
 
-/* Estilos de la barra de navegación */
+/* Navbar */
 .navbar {
-  background-color: #343a40;
+  background-color: var(--color-navbar-bg);
 }
 
 .navbar .navbar-brand {
-  color: #39FF14;
+  color: var(--color-primary);
   font-weight: bold;
 }
 
 .navbar-toggler {
-  border-color: #39FF14;
+  border-color: var(--color-primary);
 }
 
 .navbar .navbar-nav .nav-link {
-  color: #fff;
+  color: var(--color-white);
 }
 
 .navbar .navbar-nav .nav-link.active {
-  color: #39FF14;
+  color: var(--color-primary);
 }
 
-/* Sección principal */
+/* Hero */
 .hero {
-  background-color: #343a40;
-  color: #fff;
+  background-color: var(--color-navbar-bg);
+  color: var(--color-white);
   padding: 5rem 0;
   text-align: center;
 }
@@ -72,35 +108,35 @@ h2 {
   font-size: 3rem;
 }
 
-/* Estilos para las tarjetas de producto */
+/* Cards de producto */
 .product-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra alrededor */
+  box-shadow: 0 10px 30px var(--shadow-light);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 10px;
-  background: #fff;
+  border-radius: var(--border-radius-base);
+  background: var(--color-white);
   overflow: hidden;
 }
 
 .product-card:hover {
-  transform: translateY(-10px); /* Levanta la tarjeta al pasar el ratón */
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Sombra más intensa */
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px var(--shadow-medium);
 }
 
 .card {
   border: none;
-  background: #fff;
-  border-radius: 10px;
+  background: var(--color-white);
+  border-radius: var(--border-radius-base);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px var(--shadow-light);
 }
 
 .card-img-top {
@@ -110,7 +146,6 @@ h2 {
   transition: transform 0.3s ease;
 }
 
-/* Zoom en la imagen cuando se pasa el ratón por encima */
 .product-img-container:hover .card-img-top {
   transform: scale(1.1);
 }
@@ -121,61 +156,61 @@ h2 {
 
 .card-title {
   font-weight: bold;
-  color: #333;
+  color: var(--color-text-dark);
 }
 
 .card-text {
-  font-size: 14px;
-  color: #757575;
+  font-size: var(--font-size-small);
+  color: var(--color-text-muted);
 }
 
 .card-text .fw-bold {
-  font-size: 16px;
-  color: #2c3e50;
+  font-size: 1rem;
+  color: var(--color-text-muted-dark);
 }
 
-/* Estilos para los botones */
+/* Botones */
 .btn-dark {
-  background-color: #343a40;
-  border-color: #343a40;
-  color: #39FF14;
-  transition: background-color 0.3s ease;
+  background-color: var(--color-navbar-bg);
+  border-color: var(--color-navbar-bg);
+  color: var(--color-primary);
+  transition: background-color var(--transition-fast);
 }
 
 .btn-dark:hover,
 .btn-dark:focus {
-  background-color: #39FF14;
-  color: #343a40;
+  background-color: var(--color-primary);
+  color: var(--color-navbar-bg);
   outline: none;
 }
 
 .btn-dark:focus {
-  outline: 2px solid #39FF14;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .product-card-btn {
-  background-color: #1e88e5;
-  color: white;
+  background-color: var(--color-btn-bg);
+  color: var(--color-white);
   border: none;
-  border-radius: 5px;
+  border-radius: var(--btn-border-radius);
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-fast);
 }
 
 .product-card-btn:hover,
 .product-card-btn:focus {
-  background-color: #1565c0;
+  background-color: var(--color-btn-bg-hover);
   cursor: pointer;
   outline: none;
 }
 
 .product-card-btn:focus {
-  outline: 2px solid #1565c0;
+  outline: 2px solid var(--color-btn-bg-hover);
   outline-offset: 2px;
 }
 
-/* Estilos para la galería */
+/* Galería */
 .row {
   margin-top: 2rem;
 }
@@ -184,9 +219,9 @@ h2 {
   padding: 0.5rem;
 }
 
-/* Estilos para el carrito */
+/* Carrito */
 .cart-main {
-  min-height: calc(100vh - 80px); /* Altura mínima para ocupar pantalla completa menos footer */
+  min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
 }
@@ -204,7 +239,7 @@ h2 {
   opacity: 0.6;
 }
 
-/* Estilos responsivos */
+/* Responsividad */
 @media (max-width: 767px) {
   .hero {
     padding: 3rem 1rem;
@@ -216,7 +251,7 @@ h2 {
   }
 
   .navbar-toggler-icon {
-    background-color: #39FF14;
+    background-color: var(--color-primary);
   }
 
   .product-card {
@@ -229,6 +264,7 @@ h2 {
     max-width: 350px;
   }
 }
+
 
 
 

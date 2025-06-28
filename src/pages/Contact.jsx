@@ -1,5 +1,8 @@
 import { Helmet } from 'react-helmet';
 
+/**
+ * Página de contacto con formulario para enviar mensajes mediante Formspree.
+ */
 function Contact() {
   return (
     <div className="container mt-4 d-flex justify-content-center">
@@ -24,6 +27,7 @@ function Contact() {
               className="form-control"
               placeholder="Tu nombre"
               required
+              aria-required="true"
               aria-label="Nombre"
             />
           </div>
@@ -36,6 +40,7 @@ function Contact() {
               className="form-control"
               placeholder="nombre@ejemplo.com"
               required
+              aria-required="true"
               aria-label="Correo electrónico"
             />
           </div>
@@ -48,6 +53,7 @@ function Contact() {
               rows="4"
               placeholder="Escribí tu mensaje..."
               required
+              aria-required="true"
               aria-label="Mensaje"
             ></textarea>
           </div>
@@ -65,6 +71,7 @@ function Contact() {
 }
 
 export default Contact;
+
 
 
 
