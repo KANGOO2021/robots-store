@@ -8,6 +8,9 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+/**
+ * Componente para la flecha siguiente del slider con accesibilidad
+ */
 function NextArrow(props) {
   const { className, style, onClick, currentSlide, slideCount } = props;
   const isDisabled = currentSlide === slideCount - 1;
@@ -36,13 +39,16 @@ function NextArrow(props) {
       tabIndex={isDisabled ? -1 : 0}
       onKeyDown={e => { if ((e.key === 'Enter' || e.key === ' ') && !isDisabled) onClick(); }}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
         <path d="M8 5l8 7-8 7V5z" />
       </svg>
     </div>
   );
 }
 
+/**
+ * Componente para la flecha anterior del slider con accesibilidad
+ */
 function PrevArrow(props) {
   const { className, style, onClick, currentSlide } = props;
   const isDisabled = currentSlide === 0;
@@ -71,19 +77,24 @@ function PrevArrow(props) {
       tabIndex={isDisabled ? -1 : 0}
       onKeyDown={e => { if ((e.key === 'Enter' || e.key === ' ') && !isDisabled) onClick(); }}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
         <path d="M16 19l-8-7 8-7v14z" />
       </svg>
     </div>
   );
 }
 
+/**
+ * Componente principal Gallery que muestra una galería de productos
+ * con paginación y slider para dispositivos móviles.
+ */
 function Gallery({ searchTerm }) {
-  const { products } = useProduct();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(4);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const { products } = useProduct(); // Obtiene productos desde el contexto
+  const [currentPage, setCurrentPage] = useState(1); // Página actual para paginación
+  const [itemsPerPage, setItemsPerPage] = useState(4); // Cantidad de productos por página
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Detecta si es dispositivo móvil
 
+  // Detecta cambios en el tamaño de pantalla para ajustar items por página y diseño responsive
   useEffect(() => {
     const updateLayout = () => {
       const width = window.innerWidth;
@@ -91,9 +102,10 @@ function Gallery({ searchTerm }) {
 
       const minCardWidth = 280;
       const possibleItems = Math.floor(width / minCardWidth);
+      // Limita cantidad entre 1 y 4 para que no se rompa el diseño
       const newItemsPerPage = Math.min(Math.max(possibleItems, 1), 4);
       setItemsPerPage(newItemsPerPage);
-      setCurrentPage(1);
+      setCurrentPage(1); // Resetea página al cambiar tamaño
     };
 
     updateLayout();
@@ -101,9 +113,15 @@ function Gallery({ searchTerm }) {
     return () => window.removeEventListener('resize', updateLayout);
   }, []);
 
+  /**
+   * Normaliza texto para comparar sin tildes ni mayúsculas
+   * @param {string} text
+   * @returns {string}
+   */
   const normalizeText = (text) =>
     text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
+  // Filtra productos por término de búsqueda normalizado
   const filteredProducts = useMemo(() => {
     if (!searchTerm) return products;
     const normalizedSearch = normalizeText(searchTerm);
@@ -112,14 +130,19 @@ function Gallery({ searchTerm }) {
     );
   }, [products, searchTerm]);
 
+  // Calcula el total de páginas según cantidad filtrada y items por página
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  // Índice inicial para slice
   const startIndex = (currentPage - 1) * itemsPerPage;
+  // Productos a mostrar en la página actual
   const currentProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
+  // Resetea a página 1 cada vez que cambia el término de búsqueda
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
 
+  // Título y descripción dinámica para SEO
   const pageTitle = searchTerm
     ? `Buscar: "${searchTerm}" | Robots Store`
     : 'Catálogo de Robots | Robots Store';
@@ -128,6 +151,7 @@ function Gallery({ searchTerm }) {
     ? `Resultados de búsqueda para "${searchTerm}" en el catálogo de robots inteligentes.`
     : 'Explorá nuestro catálogo de robots inteligentes y tecnológicos.';
 
+  // Configuraciones para el slider en móvil
   const sliderSettings = {
     dots: false,
     infinite: false,
@@ -142,11 +166,13 @@ function Gallery({ searchTerm }) {
 
   return (
     <div className="container mt-4" aria-label="Galería de productos">
+      {/* Helmet para SEO y accesibilidad */}
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
       </Helmet>
 
+      {/* Título principal con roles para accesibilidad */}
       <h2
         className="text-center text-uppercase fw-bold text-dark"
         role="heading"
@@ -164,7 +190,8 @@ function Gallery({ searchTerm }) {
             </div>
           </div>
         ) : isMobile ? (
-          <Slider {...sliderSettings}>
+          // Muestra slider para dispositivos móviles
+          <Slider {...sliderSettings} aria-label="Slider de productos">
             {filteredProducts.map(product => (
               <div key={product.id}>
                 <ProductCard product={product} />
@@ -172,6 +199,7 @@ function Gallery({ searchTerm }) {
             ))}
           </Slider>
         ) : (
+          // Muestra productos en grilla para escritorio
           currentProducts.map(product => (
             <div
               key={product.id}
@@ -188,6 +216,7 @@ function Gallery({ searchTerm }) {
         )}
       </div>
 
+      {/* Paginación visible solo en desktop y si hay productos */}
       {!isMobile && filteredProducts.length > 0 && (
         <Paginator
           currentPage={currentPage}
@@ -200,6 +229,7 @@ function Gallery({ searchTerm }) {
 }
 
 export default Gallery;
+
 
 
 

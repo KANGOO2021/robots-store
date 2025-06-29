@@ -96,4 +96,48 @@ Este sistema hace que el catálogo sea más ágil, ordenado y cómodo para el us
 
 ```bash
 git clone https://github.com/KANGOO2021/robots-store.git
+```
 
+2. Acceder al directorio:
+
+```bash
+cd robots-store
+```
+
+3. Instalar dependencias:
+
+```bash
+npm install
+```
+
+4. Iniciar servidor de desarrollo:
+
+```bash
+npm run dev
+```
+
+5. Abrir en navegador:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Despliegue Online
+
+Disponible en:
+
+[https://robots-store-web.vercel.app/](https://robots-store-web.vercel.app/)
+
+---
+
+## Enlaces
+
+- Repositorio GitHub: [https://github.com/KANGOO2021/robots-store](https://github.com/KANGOO2021/robots-store)
+- Despliegue Vercel: [https://robots-store-web.vercel.app/](https://robots-store-web.vercel.app/)
+
+---
+
+¡Gracias por visitar Robots Store!  
+Para consultas o sugerencias, no dudes en contactarme.

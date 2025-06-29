@@ -6,6 +6,7 @@ import { BiLogIn, BiLogOut } from 'react-icons/bi';
 import { FiSettings } from 'react-icons/fi';
 import { useState } from 'react';
 import SearchBar from './SearchBar';
+import { Helmet } from 'react-helmet';
 
 function NavBar({ onSearch }) {
   const { user, logout } = useAuth();
@@ -47,7 +48,11 @@ function NavBar({ onSearch }) {
     if (user.role === 'admin') {
       return (
         <>
-          <span className="badge bg-danger ms-2 d-none d-sm-inline-block" aria-label="Administrador" style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}>
+          <span
+            className="badge bg-danger ms-2 d-none d-sm-inline-block"
+            aria-label="Administrador"
+            style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}
+          >
             Admin
           </span>
           <Link to="/admin" className="d-inline-block d-sm-none ms-2" title="Panel de administrador">
@@ -82,6 +87,7 @@ function NavBar({ onSearch }) {
           title={user.name || user.email}
           aria-label={`Usuario: ${user.name || user.email}`}
           role="img"
+          tabIndex={0}
         >
           {initial}
         </div>
@@ -95,21 +101,49 @@ function NavBar({ onSearch }) {
     setExpanded(false);
   };
 
+  // Generar título dinámico según ruta
+  const pageTitle = (() => {
+    switch (location.pathname) {
+      case '/':
+        return 'Robots Store - Inicio';
+      case '/gallery':
+        return 'Robots Store - Productos';
+      case '/contact':
+        return 'Robots Store - Contacto';
+      case '/admin':
+        return 'Robots Store - Panel de Administración';
+      case '/cart':
+        return 'Robots Store - Carrito de Compras';
+      case '/login':
+        return 'Robots Store - Iniciar Sesión';
+      case '/register':
+        return 'Robots Store - Registro';
+      default:
+        return 'Robots Store';
+    }
+  })();
+
   return (
     <>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta
+          name="description"
+          content="Robots Store - tienda online de robots inteligentes. Explora productos, administra tu cuenta y compra con facilidad."
+        />
+      </Helmet>
+
       <style>{`
         .navbar-toggler {
           border: none !important;
           outline: none !important;
           box-shadow: none !important;
         }
-
         @media (min-width: 768px) {
           .navbar-toggler {
             display: none !important;
           }
         }
-
         @media (min-width: 768px) and (max-width: 991px) {
           #navMenu {
             display: flex !important;
@@ -119,35 +153,44 @@ function NavBar({ onSearch }) {
             flex-direction: row !important;
             align-items: center !important;
           }
-
           .container-fluid {
             display: flex !important;
             flex-wrap: nowrap;
             align-items: center;
             justify-content: space-between;
           }
-
           .navbar-nav {
             flex-direction: row !important;
             margin-bottom: 0 !important;
           }
-
           .navbar-nav .nav-item {
             margin-left: 1rem;
             margin-right: 1rem;
           }
-
           .d-lg-none {
             display: none !important;
           }
         }
       `}</style>
 
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+      <nav
+        className="navbar navbar-expand-lg navbar-dark bg-dark px-3"
+        aria-label="Barra de navegación principal"
+      >
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/" onClick={handleLinkClick}>Robots Store</Link>
+          <Link
+            className="navbar-brand"
+            to="/"
+            onClick={handleLinkClick}
+            aria-current={location.pathname === '/' ? 'page' : undefined}
+          >
+            Robots Store
+          </Link>
 
-          <div className="d-lg-none d-flex align-items-center gap-2 ms-auto">
+          <div
+            className="d-lg-none d-flex align-items-center gap-2 ms-auto"
+            aria-label="Controles de usuario y carrito en móvil"
+          >
             {user && (
               <>
                 <Link
@@ -155,6 +198,7 @@ function NavBar({ onSearch }) {
                   to="/cart"
                   onClick={handleLinkClick}
                   style={{ textDecoration: 'none', fontSize: '1.5rem', lineHeight: '1' }}
+                  aria-label={`Carrito de compras con ${cartItemCount} ${cartItemCount === 1 ? 'producto' : 'productos'}`}
                 >
                   🛒
                   {cartItemCount > 0 && (
@@ -167,7 +211,12 @@ function NavBar({ onSearch }) {
                   )}
                 </Link>
 
-                <button onClick={handleLogout} className="btn btn-link text-white p-0 fs-5" type="button">
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-link text-white p-0 fs-5"
+                  type="button"
+                  aria-label="Cerrar sesión"
+                >
                   <BiLogOut size={24} />
                 </button>
 
@@ -175,31 +224,74 @@ function NavBar({ onSearch }) {
               </>
             )}
 
-            {!user && location.pathname !== '/login' && location.pathname !== '/register' && (
-              <Link className="text-white fs-5" to="/login" onClick={handleLinkClick}>
-                <BiLogIn size={24} />
-              </Link>
-            )}
+            {!user &&
+              location.pathname !== '/login' &&
+              location.pathname !== '/register' && (
+                <Link
+                  className="text-white fs-5"
+                  to="/login"
+                  onClick={handleLinkClick}
+                  aria-label="Iniciar sesión"
+                >
+                  <BiLogIn size={24} />
+                </Link>
+              )}
           </div>
 
-          <button className="navbar-toggler" type="button" onClick={() => setExpanded(!expanded)}>
+          <button
+            className="navbar-toggler"
+            type="button"
+            aria-expanded={expanded}
+            aria-controls="navMenu"
+            aria-label="Alternar menú de navegación"
+            onClick={() => setExpanded(!expanded)}
+          >
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className={`collapse navbar-collapse ${expanded ? 'show' : ''}`} id="navMenu">
+          <div
+            className={`collapse navbar-collapse ${expanded ? 'show' : ''}`}
+            id="navMenu"
+          >
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link" to="/" onClick={handleLinkClick}>Inicio</Link>
+                <Link
+                  className="nav-link"
+                  to="/"
+                  onClick={handleLinkClick}
+                  aria-current={location.pathname === '/' ? 'page' : undefined}
+                >
+                  Inicio
+                </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/gallery" onClick={handleLinkClick}>Productos</Link>
+                <Link
+                  className="nav-link"
+                  to="/gallery"
+                  onClick={handleLinkClick}
+                  aria-current={location.pathname === '/gallery' ? 'page' : undefined}
+                >
+                  Productos
+                </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/contact" onClick={handleLinkClick}>Contacto</Link>
+                <Link
+                  className="nav-link"
+                  to="/contact"
+                  onClick={handleLinkClick}
+                  aria-current={location.pathname === '/contact' ? 'page' : undefined}
+                >
+                  Contacto
+                </Link>
               </li>
               {user?.role === 'admin' && (
                 <li className="nav-item d-block d-sm-none">
-                  <Link className="nav-link text-danger fw-bold" to="/admin" onClick={handleLinkClick}>
+                  <Link
+                    className="nav-link text-danger fw-bold"
+                    to="/admin"
+                    onClick={handleLinkClick}
+                    aria-current={location.pathname === '/admin' ? 'page' : undefined}
+                  >
                     ⚙ Panel
                   </Link>
                 </li>
@@ -211,7 +303,12 @@ function NavBar({ onSearch }) {
                 <div className="w-100 d-lg-none mb-3">
                   <SearchBar searchTerm={searchTerm} onSearch={handleSearchChange} />
                 </div>
-                <div className="d-none d-md-flex ms-auto" style={{ maxWidth: '300px' }}>
+                <div
+                  className="d-none d-md-flex ms-auto"
+                  style={{ maxWidth: '300px' }}
+                  role="search"
+                  aria-label="Buscar productos"
+                >
                   <SearchBar searchTerm={searchTerm} onSearch={handleSearchChange} />
                 </div>
               </>
@@ -220,12 +317,16 @@ function NavBar({ onSearch }) {
             <ul className="navbar-nav mb-2 mb-lg-0 d-none d-md-flex align-items-center">
               {user && (
                 <>
-                  <li className="nav-item me-2 position-relative" style={{ minWidth: '40px' }}>
+                  <li
+                    className="nav-item me-2 position-relative"
+                    style={{ minWidth: '40px' }}
+                  >
                     <Link
                       className="nav-link position-relative"
                       to="/cart"
                       onClick={handleLinkClick}
                       style={{ fontSize: '1.8rem', textDecoration: 'none', lineHeight: '1' }}
+                      aria-label={`Carrito de compras con ${cartItemCount} ${cartItemCount === 1 ? 'producto' : 'productos'}`}
                     >
                       🛒
                       {cartItemCount > 0 && (
@@ -246,7 +347,12 @@ function NavBar({ onSearch }) {
                   </li>
 
                   <li className="nav-item">
-                    <button className="btn btn-outline-light btn-sm ms-2" onClick={handleLogout} type="button">
+                    <button
+                      className="btn btn-outline-light btn-sm ms-2"
+                      onClick={handleLogout}
+                      type="button"
+                      aria-label="Cerrar sesión"
+                    >
                       <BiLogOut size={20} />
                     </button>
                   </li>
@@ -254,13 +360,21 @@ function NavBar({ onSearch }) {
                   <li className="nav-item">{renderUserBadge()}</li>
                 </>
               )}
-              {!user && location.pathname !== '/login' && location.pathname !== '/register' && (
-                <li className="nav-item">
-                  <Link className="btn btn-outline-light btn-sm" to="/login" onClick={handleLinkClick}>
-                    <BiLogIn size={20} />
-                  </Link>
-                </li>
-              )}
+
+              {!user &&
+                location.pathname !== '/login' &&
+                location.pathname !== '/register' && (
+                  <li className="nav-item">
+                    <Link
+                      className="btn btn-outline-light btn-sm"
+                      to="/login"
+                      onClick={handleLinkClick}
+                      aria-label="Iniciar sesión"
+                    >
+                      <BiLogIn size={20} />
+                    </Link>
+                  </li>
+                )}
             </ul>
           </div>
         </div>
@@ -270,6 +384,7 @@ function NavBar({ onSearch }) {
 }
 
 export default NavBar;
+
 
 
 
