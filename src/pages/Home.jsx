@@ -14,11 +14,29 @@ const Home = () => {
         />
       </Helmet>
 
-      <h1 className="display-4 text-center mb-4" role="heading" aria-level="1">
-        Bienvenidos a Robots Store
+      <h1
+        className="display-4 text-center mb-4"
+        role="heading"
+        aria-level="1"
+        style={{
+          fontWeight: '900',
+          color: '#0d6efd',  // azul Bootstrap primario para destacar
+          textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+          letterSpacing: '2px',
+          marginBottom: '1rem',
+        }}
+      >
+        Bienvenidos a{' '}
+        <span style={{ display: 'block', textAlign: 'center', fontSize: '3.5rem', fontWeight: '900', color: '#198754' }}>
+          Robots Store
+        </span>
       </h1>
 
-      <p className="lead text-center" aria-label="Descripción principal del sitio">
+      <p
+        className="lead"
+        aria-label="Descripción principal del sitio"
+        style={{ textAlign: 'justify' }}
+      >
         La tienda número uno en tecnología robótica para el hogar, la educación y la seguridad. Innovación, funcionalidad y diseño al servicio de tu vida cotidiana.
       </p>
 
@@ -27,11 +45,11 @@ const Home = () => {
       <div className="row">
         <div className="col-md-6">
           <h2 role="heading" aria-level="2">🤖 ¿Qué es Robots Store?</h2>
-          <p>
+          <p style={{ textAlign: 'justify' }}>
             Somos una tienda especializada en la venta de robots inteligentes diseñados para facilitarte tareas diarias, promover el aprendizaje tecnológico y mejorar la seguridad de tu hogar.
             Desde aspiradoras automáticas y brazos robóticos DIY hasta robots educativos e interactivos, ofrecemos lo último en automatización personal al alcance de todos.
           </p>
-          <p>
+          <p style={{ textAlign: 'justify' }}>
             Nuestra misión es acercar la robótica a las personas comunes, brindando productos accesibles, confiables y con garantía de calidad. Creemos que el futuro está en la automatización, y queremos que vos seas parte de él.
           </p>
         </div>
@@ -62,6 +80,7 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
 

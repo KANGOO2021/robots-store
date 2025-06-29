@@ -82,12 +82,12 @@ function Gallery({ searchTerm }) {
   const { products } = useProduct();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // < 768
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const updateLayout = () => {
       const width = window.innerWidth;
-      setIsMobile(width < 768); // < 768
+      setIsMobile(width < 768);
 
       const minCardWidth = 280;
       const possibleItems = Math.floor(width / minCardWidth);
@@ -157,7 +157,13 @@ function Gallery({ searchTerm }) {
       </h2>
 
       <div className="row g-4 mt-4">
-        {isMobile ? (
+        {filteredProducts.length === 0 ? (
+          <div className="col-12">
+            <div className="alert alert-warning text-center" role="status">
+              No se encontraron resultados para "<strong>{searchTerm}</strong>"
+            </div>
+          </div>
+        ) : isMobile ? (
           <Slider {...sliderSettings}>
             {filteredProducts.map(product => (
               <div key={product.id}>
@@ -182,7 +188,7 @@ function Gallery({ searchTerm }) {
         )}
       </div>
 
-      {!isMobile && (
+      {!isMobile && filteredProducts.length > 0 && (
         <Paginator
           currentPage={currentPage}
           totalPages={totalPages}
@@ -194,6 +200,7 @@ function Gallery({ searchTerm }) {
 }
 
 export default Gallery;
+
 
 
 

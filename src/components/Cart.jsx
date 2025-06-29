@@ -4,11 +4,6 @@ import { useProduct } from '../context/ProductContext';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet';
 
-/**
- * Componente que representa el carrito de compras.
- * Permite visualizar los productos agregados, modificar cantidades,
- * vaciar el carrito o finalizar la compra.
- */
 function Cart() {
   const {
     cart,
@@ -20,10 +15,6 @@ function Cart() {
 
   const { decreaseStock, getProductById } = useProduct();
 
-  /**
-   * Finaliza la compra si el carrito tiene productos válidos.
-   * Verifica stock disponible, actualiza el inventario y vacía el carrito.
-   */
   const finishPurchase = async () => {
     if (cart.length === 0) {
       toast.warn('El carrito está vacío');
@@ -49,7 +40,7 @@ function Cart() {
       toast.success('¡Gracias por tu compra!');
     } catch (error) {
       toast.error('Ocurrió un error al finalizar la compra.');
-      console.error('Error al finalizar la compra:', error); // Se deja para depuración durante desarrollo
+      console.error('Error al finalizar la compra:', error);
     }
   };
 
@@ -85,66 +76,74 @@ function Cart() {
                 <div
                   key={item.id}
                   role="listitem"
-                  className="list-group-item d-flex justify-content-between align-items-center"
+                  className="list-group-item"
                 >
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        objectFit: 'cover',
-                        marginRight: '10px',
-                      }}
-                    />
-                    <div>
-                      <h5 className="mb-1">{item.title}</h5>
-                      <p className="mb-0">
-                        ${item.price.toFixed(2)} x {item.quantity} ={' '}
-                        <strong>${(item.price * item.quantity).toFixed(2)}</strong>
-                      </p>
+                  <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center w-100 gap-3">
+                    <div className="d-flex align-items-start">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="me-3"
+                        style={{
+                          width: '60px',
+                          height: '60px',
+                          objectFit: 'cover',
+                          flexShrink: 0
+                        }}
+                      />
+                      <div>
+                        <h5 className="mb-1">{item.title}</h5>
+                        <p className="mb-0">
+                          ${item.price.toFixed(2)} x {item.quantity} ={' '}
+                          <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <button
-                      className="btn btn-outline-secondary me-2"
-                      onClick={() => updateQuantity(item.id, -1)}
-                      disabled={item.quantity <= 1}
-                      aria-label={`Disminuir cantidad de ${item.title}`}
-                    >
-                      -
-                    </button>
-                    <span className="mx-2" aria-live="polite" aria-atomic="true">
-                      {item.quantity}
-                    </span>
-                    <button
-                      className="btn btn-outline-secondary ms-2"
-                      onClick={() => {
-                        const product = getProductById(item.id);
-                        if (product && item.quantity < product.stock) {
-                          updateQuantity(item.id, 1);
-                        } else {
-                          toast.warn('Stock máximo alcanzado');
-                        }
-                      }}
-                      aria-label={`Aumentar cantidad de ${item.title}`}
-                    >
-                      +
-                    </button>
-                    <button
-                      className="btn btn-danger ms-3"
-                      onClick={() => removeFromCart(item.id)}
-                      aria-label={`Eliminar ${item.title} del carrito`}
-                    >
-                      Eliminar
-                    </button>
+
+                    <div className="d-flex flex-wrap gap-2 align-items-center justify-content-start justify-content-md-end">
+                      <button
+                        className="btn btn-outline-secondary"
+                        onClick={() => updateQuantity(item.id, -1)}
+                        disabled={item.quantity <= 1}
+                        aria-label={`Disminuir cantidad de ${item.title}`}
+                      >
+                        -
+                      </button>
+                      <span
+                        aria-live="polite"
+                        aria-atomic="true"
+                        className="px-2"
+                      >
+                        {item.quantity}
+                      </span>
+                      <button
+                        className="btn btn-outline-secondary"
+                        onClick={() => {
+                          const product = getProductById(item.id);
+                          if (product && item.quantity < product.stock) {
+                            updateQuantity(item.id, 1);
+                          } else {
+                            toast.warn('Stock máximo alcanzado');
+                          }
+                        }}
+                        aria-label={`Aumentar cantidad de ${item.title}`}
+                      >
+                        +
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => removeFromCart(item.id)}
+                        aria-label={`Eliminar ${item.title} del carrito`}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="d-flex justify-content-between align-items-center mt-4">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mt-4 gap-3">
               <h4>
                 Total:{' '}
                 <span className="text-success">
@@ -168,6 +167,7 @@ function Cart() {
 }
 
 export default Cart;
+
 
 
 
