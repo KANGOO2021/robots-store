@@ -9,36 +9,24 @@ function AdminProducts() {
   const { user } = useAuth();
   const { products, updateProduct, fetchProducts } = useProduct();
 
-  // Estado para producto que se está editando, o null para agregar nuevo producto
   const [editingProduct, setEditingProduct] = useState(null);
-  // Estado para controlar visibilidad del modal de formulario
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Abre modal para agregar nuevo producto (sin datos pre-cargados)
   const openAddModal = () => {
     setEditingProduct(null);
     setModalVisible(true);
   };
 
-  // Abre modal para editar un producto, pasando datos actuales
   const openEditModal = (product) => {
     setEditingProduct(product);
     setModalVisible(true);
   };
 
-  // Cierra modal y limpia el producto en edición
   const closeModal = () => {
     setModalVisible(false);
     setEditingProduct(null);
   };
 
-  /**
-   * Maneja la acción de guardar producto (agregar o actualizar).
-   * - Si se está editando, actualiza producto con updateProduct.
-   * - Si es nuevo, realiza POST al endpoint mockapi y recarga productos.
-   * Muestra alertas con SweetAlert para éxito o error.
-   * @param {object} productData - Datos del producto desde el formulario
-   */
   const handleSave = async (productData) => {
     try {
       if (editingProduct) {
@@ -62,12 +50,6 @@ function AdminProducts() {
     }
   };
 
-  /**
-   * Maneja la eliminación de un producto con confirmación modal.
-   * - Si confirma, realiza DELETE y recarga productos.
-   * - Muestra alertas para éxito o error.
-   * @param {string|number} id - ID del producto a eliminar
-   */
   const handleDelete = async (id) => {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -94,7 +76,6 @@ function AdminProducts() {
     });
   };
 
-  // Si no hay usuario logueado, o no es admin, se muestra mensaje de acceso denegado
   if (!user) {
     return (
       <div className="container mt-5">
@@ -106,7 +87,6 @@ function AdminProducts() {
     );
   }
 
-  // Vista principal del panel con listado de productos y botones para CRUD
   return (
     <div className="container mt-5">
       <Helmet>
@@ -127,50 +107,59 @@ function AdminProducts() {
 
       <p className="text-success text-center">Bienvenido, {user.name}</p>
 
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th><th>Título</th><th>Precio</th><th>Stock</th><th>Imagen</th><th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.length === 0 ? (
-            <tr><td colSpan="6" className="text-center">No hay productos</td></tr>
-          ) : products.map(prod => (
-            <tr key={prod.id}>
-              <td>{prod.id}</td>
-              <td>{prod.title}</td>
-              <td>${prod.price.toFixed(2)}</td>
-              <td>{prod.stock}</td>
-              <td>
-                {prod.image ? (
-                  <img
-                    src={prod.image}
-                    alt={`Imagen de ${prod.title}`}
-                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                  />
-                ) : 'Sin imagen'}
-              </td>
-              <td>
-                <button
-                  className="btn btn-sm btn-primary me-2"
-                  onClick={() => openEditModal(prod)}
-                  aria-label={`Editar producto ${prod.title}`}
-                >
-                  Editar
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => handleDelete(prod.id)}
-                  aria-label={`Eliminar producto ${prod.title}`}
-                >
-                  Eliminar
-                </button>
-              </td>
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Imagen</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {products.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="text-center">No hay productos</td>
+              </tr>
+            ) : products.map(prod => (
+              <tr key={prod.id}>
+                <td>{prod.id}</td>
+                <td>{prod.title}</td>
+                <td>${prod.price.toFixed(2)}</td>
+                <td>{prod.stock}</td>
+                <td>
+                  {prod.image ? (
+                    <img
+                      src={prod.image}
+                      alt={`Imagen de ${prod.title}`}
+                      style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                    />
+                  ) : 'Sin imagen'}
+                </td>
+                <td>
+                  <button
+                    className="btn btn-sm btn-primary me-2"
+                    onClick={() => openEditModal(prod)}
+                    aria-label={`Editar producto ${prod.title}`}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(prod.id)}
+                    aria-label={`Eliminar producto ${prod.title}`}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <ProductFormModal
         show={modalVisible}
@@ -183,6 +172,7 @@ function AdminProducts() {
 }
 
 export default AdminProducts;
+
 
 
 

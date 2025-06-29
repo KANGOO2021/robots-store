@@ -77,54 +77,23 @@ Robots Store es un e-commerce moderno especializado en la venta de productos de 
 
 ---
 
+## Actualización: Paginación en la Galería de Productos
+
+Se implementó un sistema de paginación para la galería de productos que mejora la experiencia de navegación, especialmente en dispositivos de escritorio y tabletas. Ahora, los productos se muestran en páginas con un número limitado de ítems por vista, ajustándose dinámicamente según el tamaño de pantalla.
+
+- En modo escritorio/tablet, la paginación muestra un conjunto fijo de productos con botones para navegar entre páginas.
+- En modo móvil, se utiliza un slider táctil para deslizar entre productos de forma natural con el dedo, facilitando la interacción en pantallas pequeñas.
+- La paginación ayuda a optimizar el rendimiento, evitando la carga y renderizado masivo de todos los productos a la vez.
+- Mejora la usabilidad y accesibilidad al indicar claramente la existencia de más productos para explorar.
+
+Este sistema hace que el catálogo sea más ágil, ordenado y cómodo para el usuario, manteniendo una experiencia visual limpia y profesional.
+
+---
+
 ## Instalación
 
 1. Clonar el repositorio:
 
 ```bash
 git clone https://github.com/KANGOO2021/robots-store.git
-```
 
-2. Acceder al directorio:
-
-```bash
-cd robots-store
-```
-
-3. Instalar dependencias:
-
-```bash
-npm install
-```
-
-4. Iniciar servidor de desarrollo:
-
-```bash
-npm run dev
-```
-
-5. Abrir en navegador:
-
-```
-http://localhost:5173
-```
-
----
-
-## Despliegue Online
-
-Disponible en:
-
-[https://robots-store-web.vercel.app/](https://robots-store-web.vercel.app/)
-
----
-
-## Enlaces
-
-- Repositorio GitHub: [https://github.com/KANGOO2021/robots-store](https://github.com/KANGOO2021/robots-store)
-- Despliegue Vercel: [https://robots-store-web.vercel.app/](https://robots-store-web.vercel.app/)
-
----
-
-¡Gracias por visitar Robots Store!  
-Para consultas o sugerencias, no dudes en contactarme.

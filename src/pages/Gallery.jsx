@@ -1,4 +1,3 @@
-// Gallery.jsx
 import { useProduct } from '../context/ProductContext';
 import ProductCard from '../components/ProductCard';
 import { useMemo, useState, useEffect } from 'react';
@@ -6,20 +5,89 @@ import { Helmet } from 'react-helmet';
 import Paginator from '../components/Paginator';
 import Slider from 'react-slick';
 
-// Importar los estilos slick-carousel obligatorios
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+function NextArrow(props) {
+  const { className, style, onClick, currentSlide, slideCount } = props;
+  const isDisabled = currentSlide === slideCount - 1;
+
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: isDisabled ? '#ccc' : '#666',
+        borderRadius: '50%',
+        width: 30,
+        height: 30,
+        right: 5,
+        zIndex: 1000,
+        cursor: isDisabled ? 'default' : 'pointer',
+        opacity: isDisabled ? 0.5 : 1,
+      }}
+      onClick={isDisabled ? null : onClick}
+      aria-disabled={isDisabled}
+      aria-label="Siguiente"
+      role="button"
+      tabIndex={isDisabled ? -1 : 0}
+      onKeyDown={e => { if ((e.key === 'Enter' || e.key === ' ') && !isDisabled) onClick(); }}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20">
+        <path d="M8 5l8 7-8 7V5z" />
+      </svg>
+    </div>
+  );
+}
+
+function PrevArrow(props) {
+  const { className, style, onClick, currentSlide } = props;
+  const isDisabled = currentSlide === 0;
+
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: isDisabled ? '#ccc' : '#666',
+        borderRadius: '50%',
+        width: 30,
+        height: 30,
+        left: 5,
+        zIndex: 1000,
+        cursor: isDisabled ? 'default' : 'pointer',
+        opacity: isDisabled ? 0.5 : 1,
+      }}
+      onClick={isDisabled ? null : onClick}
+      aria-disabled={isDisabled}
+      aria-label="Anterior"
+      role="button"
+      tabIndex={isDisabled ? -1 : 0}
+      onKeyDown={e => { if ((e.key === 'Enter' || e.key === ' ') && !isDisabled) onClick(); }}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20">
+        <path d="M16 19l-8-7 8-7v14z" />
+      </svg>
+    </div>
+  );
+}
 
 function Gallery({ searchTerm }) {
   const { products } = useProduct();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // < 768
 
   useEffect(() => {
     const updateLayout = () => {
       const width = window.innerWidth;
-      setIsMobile(width <= 768);
+      setIsMobile(width < 768); // < 768
 
       const minCardWidth = 280;
       const possibleItems = Math.floor(width / minCardWidth);
@@ -60,15 +128,16 @@ function Gallery({ searchTerm }) {
     ? `Resultados de búsqueda para "${searchTerm}" en el catálogo de robots inteligentes.`
     : 'Explorá nuestro catálogo de robots inteligentes y tecnológicos.';
 
-  // Configuración slider móvil con flechas visibles
   const sliderSettings = {
-    dots: false,          // SIN puntitos
+    dots: false,
     infinite: false,
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: true,         // MOSTRAR flechas predeterminadas
+    arrows: true,
     swipeToSlide: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
 
   return (
@@ -125,6 +194,11 @@ function Gallery({ searchTerm }) {
 }
 
 export default Gallery;
+
+
+
+
+
 
 
 

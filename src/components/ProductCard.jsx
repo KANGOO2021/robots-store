@@ -1,24 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
-/**
- * Componente que representa una tarjeta de producto individual.
- * Permite ver información del producto, agregarlo al carrito o ver más detalles.
- */
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  /**
-   * Agrega el producto actual al carrito.
-   */
   const handleAddToCart = () => {
     addToCart(product);
   };
 
-  /**
-   * Redirige a la vista de detalle del producto.
-   */
   const handleViewMore = () => {
     navigate(`/products/${product.id}`);
   };
@@ -32,11 +22,11 @@ function ProductCard({ product }) {
         style={{ height: '200px', objectFit: 'cover' }}
       />
       <div className="card-body d-flex flex-column justify-content-between">
-        <div>
-          <h5 className="card-title">{product.title}</h5>
-          <p className="card-text">{product.description}</p>
+        <div className="card-content">
+          <h5 className="card-title fixed-title">{product.title}</h5>
+          <p className="card-text fixed-description">{product.description}</p>
           <p 
-            className="text-center fw-bold text-dark"
+            className="text-center fw-bold text-dark fixed-price"
             aria-label={`Precio ${Number(product.price).toFixed(2)} dólares`}
           >
             ${Number(product.price).toFixed(2)}
@@ -70,6 +60,7 @@ function ProductCard({ product }) {
 }
 
 export default ProductCard;
+
 
 
 
