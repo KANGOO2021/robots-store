@@ -2,11 +2,13 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 export default function CheckoutForm() {
   const { cart, clearCart, finishPurchase } = useCart();
   const navigate = useNavigate();
 
+  // Estado del formulario de datos del comprador
   const [formData, setFormData] = useState({
     name: '',
     lastName: '',
@@ -22,11 +24,13 @@ export default function CheckoutForm() {
     cvv: '',
   });
 
+  // Manejo de cambio en inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Etiquetas legibles para mostrar en alertas
   const fieldLabels = {
     name: 'Nombre',
     lastName: 'Apellido',
@@ -41,11 +45,13 @@ export default function CheckoutForm() {
     cvv: 'CVV',
   };
 
+  // Validaciones de campos
   const isNumeric = (value) => /^\d+$/.test(value);
   const isAlpha = (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value);
   const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   const isValidExpiry = (value) => /^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value);
 
+  // Enviar formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,6 +64,7 @@ export default function CheckoutForm() {
       }
     }
 
+    // Validaciones específicas
     if (!isAlpha(formData.name)) {
       Swal.fire('Error de validación', 'El Nombre solo debe contener letras.', 'warning');
       return;
@@ -99,6 +106,7 @@ export default function CheckoutForm() {
       return;
     }
 
+    // Simulación de compra exitosa
     try {
       await finishPurchase();
       Swal.fire({
@@ -111,62 +119,74 @@ export default function CheckoutForm() {
         navigate('/');
       });
     } catch (error) {
+      // Error controlado si falla la función de compra
       Swal.fire('Error', 'Hubo un problema al finalizar la compra. Intentá nuevamente.', 'error');
       console.error(error);
     }
   };
 
+  // Cálculo total de la compra
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <div className="container my-5">
+      {/* Helmet para SEO dinámico */}
+      <Helmet>
+        <title>Checkout - Robots Store</title>
+        <meta name="description" content="Formulario de compra para finalizar tu pedido en Robots Store." />
+      </Helmet>
+
       <h2 className="mb-4">Finalizar Compra</h2>
-      <form onSubmit={handleSubmit} className="row g-3">
+
+      <form onSubmit={handleSubmit} className="row g-3" aria-label="Formulario de finalización de compra">
+        {/* Datos personales */}
         <div className="col-md-6">
-          <label className="form-label">Nombre *</label>
-          <input type="text" className="form-control" name="name" value={formData.name} onChange={handleChange} />
+          <label htmlFor="name" className="form-label">Nombre *</label>
+          <input type="text" className="form-control" id="name" name="name" value={formData.name} onChange={handleChange} required aria-required="true" />
         </div>
         <div className="col-md-6">
-          <label className="form-label">Apellido *</label>
-          <input type="text" className="form-control" name="lastName" value={formData.lastName} onChange={handleChange} />
+          <label htmlFor="lastName" className="form-label">Apellido *</label>
+          <input type="text" className="form-control" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required aria-required="true" />
         </div>
 
         <div className="col-md-6">
-          <label className="form-label">Email *</label>
-          <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} />
+          <label htmlFor="email" className="form-label">Email *</label>
+          <input type="email" className="form-control" id="email" name="email" value={formData.email} onChange={handleChange} required aria-required="true" />
         </div>
         <div className="col-md-6">
-          <label className="form-label">Teléfono</label>
-          <input type="tel" className="form-control" name="phone" value={formData.phone} onChange={handleChange} />
+          <label htmlFor="phone" className="form-label">Teléfono</label>
+          <input type="tel" className="form-control" id="phone" name="phone" value={formData.phone} onChange={handleChange} />
         </div>
 
-        {/* Dirección y Código Postal */}
+        {/* Dirección y código postal */}
         <div className="row align-items-center">
           <div className="col-md-8">
-            <label className="form-label">Dirección *</label>
-            <input type="text" className="form-control" name="address" value={formData.address} onChange={handleChange} />
+            <label htmlFor="address" className="form-label">Dirección *</label>
+            <input type="text" className="form-control" id="address" name="address" value={formData.address} onChange={handleChange} required aria-required="true" />
           </div>
           <div className="col-md-4">
-            <label className="form-label">Código Postal</label>
-            <input type="text" className="form-control" name="zip" value={formData.zip} onChange={handleChange} maxLength={10} />
+            <label htmlFor="zip" className="form-label">Código Postal</label>
+            <input type="text" className="form-control" id="zip" name="zip" value={formData.zip} onChange={handleChange} maxLength={10} />
           </div>
         </div>
 
+        {/* Ciudad y Provincia */}
         <div className="col-md-6">
-          <label className="form-label">Ciudad</label>
-          <input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} />
+          <label htmlFor="city" className="form-label">Ciudad</label>
+          <input type="text" className="form-control" id="city" name="city" value={formData.city} onChange={handleChange} />
         </div>
         <div className="col-md-6">
-          <label className="form-label">Provincia</label>
-          <input type="text" className="form-control" name="province" value={formData.province} onChange={handleChange} />
+          <label htmlFor="province" className="form-label">Provincia</label>
+          <input type="text" className="form-control" id="province" name="province" value={formData.province} onChange={handleChange} />
         </div>
 
+        {/* Datos de tarjeta */}
         <hr className="mt-4" />
         <h4 className="mb-3">Datos de la tarjeta</h4>
 
         <div className="col-md-6">
-          <label className="form-label">Tipo de tarjeta *</label>
-          <select className="form-select" name="cardName" value={formData.cardName} onChange={handleChange}>
+          <label htmlFor="cardName" className="form-label">Tipo de tarjeta *</label>
+          <select className="form-select" id="cardName" name="cardName" value={formData.cardName} onChange={handleChange} required aria-required="true">
             <option value="">Seleccioná una opción</option>
             <option value="Visa">Visa</option>
             <option value="Mastercard">Mastercard</option>
@@ -176,30 +196,34 @@ export default function CheckoutForm() {
         </div>
 
         <div className="col-md-6">
-          <label className="form-label">Número de tarjeta *</label>
-          <input type="text" className="form-control" name="cardNumber" value={formData.cardNumber} onChange={handleChange} maxLength={22} />
+          <label htmlFor="cardNumber" className="form-label">Número de tarjeta *</label>
+          <input type="text" className="form-control" id="cardNumber" name="cardNumber" value={formData.cardNumber} onChange={handleChange} maxLength={22} required aria-required="true" />
         </div>
 
-        {/* Vencimiento y CVV */}
-      <div className="row align-items-center">
+        <div className="row align-items-center">
           <div className="col-md-4">
-            <label className="form-label">Vencimiento (MM/AA) *</label>
-            <input type="text" className="form-control" name="expiry" value={formData.expiry} onChange={handleChange} maxLength={5} placeholder="MM/AA" />
+            <label htmlFor="expiry" className="form-label">Vencimiento (MM/AA) *</label>
+            <input type="text" className="form-control" id="expiry" name="expiry" value={formData.expiry} onChange={handleChange} maxLength={5} placeholder="MM/AA" required aria-required="true" />
           </div>
           <div className="col-md-2">
-            <label className="form-label">CVV *</label>
-            <input type="text" className="form-control" name="cvv" value={formData.cvv} onChange={handleChange} maxLength={3} />
+            <label htmlFor="cvv" className="form-label">CVV *</label>
+            <input type="text" className="form-control" id="cvv" name="cvv" value={formData.cvv} onChange={handleChange} maxLength={3} required aria-required="true" />
           </div>
         </div>
 
+        {/* Total y botón */}
         <div className="col-12 text-end">
           <h5 className="mt-4">Total: ${total.toFixed(2)}</h5>
-          <button type="submit" className="btn btn-success mt-3">Confirmar Compra</button>
+          <button type="submit" className="btn btn-success mt-3" aria-label="Confirmar compra">
+            Confirmar Compra
+          </button>
         </div>
       </form>
     </div>
   );
 }
+
+
 
 
 
