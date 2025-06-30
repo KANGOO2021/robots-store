@@ -8,10 +8,11 @@ Robots Store es un e-commerce moderno especializado en la venta de productos de 
 
 - Navegación entre páginas: Inicio, Galería, Contacto, Detalle de Producto, Carrito, Login, Registro y Administración.
 - Visualización detallada de productos con opción de agregar al carrito.
-- Gestión completa del carrito: agregar, modificar cantidades, eliminar productos, vaciar carrito y finalizar compra, 
-  con validación de stock. 
+- Gestión completa del carrito: agregar, modificar cantidades, eliminar productos, vaciar carrito y finalizar compra, con validación de stock. 
 - Sistema de autenticación simple sin backend, basado en `localStorage`, con roles `admin` y `user`.
 - Panel administrativo para agregar, editar y eliminar productos mediante formularios modales.
+- Subida de imágenes a **Cloudinary** directamente desde el frontend.
+- Formulario de **checkout validado** con control de datos, simulación de pago y actualización automática del stock.
 - Notificaciones tipo toast (React Toastify) y confirmaciones con SweetAlert2 para acciones importantes.
 - Diseño responsive y accesible, usando Bootstrap 5 y CSS personalizado con variables y soporte para modo claro/oscuro.
 - Estado global manejado con React Context API: autenticación, productos y carrito, con persistencia local.
@@ -22,32 +23,38 @@ Robots Store es un e-commerce moderno especializado en la venta de productos de 
 
 ## Estructura del Proyecto
 
-- `/pages`: páginas principales  
-  - Home.jsx  
-  - Gallery.jsx  
-  - Contact.jsx  
-  - ProductDetail.jsx  
-  - Cart.jsx  
-  - Login.jsx  
-  - Register.jsx  
-  - AdminProducts.jsx  
+- `/components`: componentes reutilizables y funcionales
+  - AdminRoute.jsx
+  - Cart.jsx
+  - CheckoutForm.jsx
+  - Footer.jsx
+  - Header.jsx
+  - ImageUploader.jsx
+  - Navbar.jsx
+  - Paginator.jsx
+  - PrivateRoute.jsx
+  - ProductCard.jsx
+  - ProductDetail.jsx
+  - ProductFormModel.jsx
+  - ProductFormModal.jsx
+  - SearchBar.jsx
 
-- `/components`: componentes reutilizables  
-  - Header.jsx, Footer.jsx, ProductCard.jsx, ProductFormModal.jsx  
-  - PrivateRoute.jsx, AdminRoute.jsx  
-  - Cart.jsx, ProductDetail.jsx  
+- `/context`: contextos para estado global
+  - AuthContext.jsx (autenticación y usuarios)
+  - CartContext.jsx (carrito y lógica de compra)
+  - ProductContext.jsx (productos y stock)
 
-- `/context`: contextos para estado global  
-  - AuthContext.jsx (autenticación y usuarios)  
-  - ProductContext.jsx (productos y stock)  
-  - CartContext.jsx (carrito y lógica de compra)  
+- `/pages`: páginas principales del sitio
+  - AdminProducts.jsx
+  - Contact.jsx
+  - Gallery.jsx
+  - Home.jsx
+  - Login.jsx
+  - Register.jsx
 
 - `/public`: recursos estáticos (favicon, imágenes)
-
 - `/App.jsx`: componente principal que configura rutas y layout
-
 - `/main.jsx`: punto de entrada que renderiza la app
-
 - `/App.css`: estilos globales con Bootstrap y CSS personalizado
 
 ---
@@ -61,7 +68,8 @@ Robots Store es un e-commerce moderno especializado en la venta de productos de 
 - React Helmet para SEO y metadatos dinámicos  
 - Vite para construcción, desarrollo rápido y hot reload  
 - Context API para manejo de estado global sin Redux  
-- LocalStorage para persistencia local de usuarios y carrito
+- LocalStorage para persistencia local de usuarios y carrito  
+- **Cloudinary** para almacenamiento de imágenes de productos
 
 ---
 
@@ -71,13 +79,17 @@ Robots Store es un e-commerce moderno especializado en la venta de productos de 
 - **Persistencia local:** usuarios, sesión y carrito almacenados en `localStorage` para mantener estado entre sesiones.  
 - **Roles y permisos:** acceso restringido para administración y funcionalidades exclusivas para usuarios autenticados.  
 - **Administración completa:** panel CRUD para productos con modales, validaciones y actualización instantánea.  
+- **Subida de imágenes:** integración con Cloudinary para subir imágenes desde el frontend sin necesidad de backend.  
+- **Formulario de compra validado:** el checkout simula una compra real, con validaciones avanzadas (nombres, email, número de tarjeta, CVV, vencimiento, etc.) y vacía el carrito al actualizar el stock exitosamente.  
 - **Notificaciones y accesibilidad:** mensajes claros con toasts y alertas, además de buenas prácticas ARIA en formularios.  
-- **Búsqueda con normalización:** búsqueda en galería que ignora mayúsculas, tildes y espacios para mejor experiencia.  
+- **Búsqueda de productos:** el componente SearchBar permite filtrar productos de forma dinámica, ignorando mayúsculas, tildes y espacios. Mejora la experiencia de usuario ayudando a encontrar artículos de forma rápida e intuitiva.  
 - **SEO:** cada página con títulos y descripciones dinámicas para mejor posicionamiento.
 
 ---
 
-## Actualización: Paginación en la Galería de Productos
+## Actualizaciones: 
+
+### Paginación en la Galería de Productos
 
 Se implementó un sistema de paginación para la galería de productos que mejora la experiencia de navegación, especialmente en dispositivos de escritorio y tabletas. Ahora, los productos se muestran en páginas con un número limitado de ítems por vista, ajustándose dinámicamente según el tamaño de pantalla.
 
@@ -87,6 +99,27 @@ Se implementó un sistema de paginación para la galería de productos que mejor
 - Mejora la usabilidad y accesibilidad al indicar claramente la existencia de más productos para explorar.
 
 Este sistema hace que el catálogo sea más ágil, ordenado y cómodo para el usuario, manteniendo una experiencia visual limpia y profesional.
+
+---
+
+### Integración con Cloudinary
+
+El sistema permite que los administradores suban imágenes de productos directamente desde el formulario de alta/modificación. Las imágenes se almacenan en **Cloudinary**, un servicio de hosting de imágenes en la nube, sin requerir backend.
+
+- Se valida el tipo y tamaño de la imagen antes de subirla.
+- Se muestra una vista previa antes de confirmar la carga.
+- La URL generada se usa automáticamente en el producto.
+
+---
+
+### Simulación de Compra y Validación en el Checkout
+
+Se agregó un **formulario de checkout validado**, que simula el proceso de compra y garantiza la consistencia de datos ingresados por el usuario. Incluye:
+
+- Validaciones avanzadas en nombre, email, número de tarjeta, CVV, fecha, etc.
+- Control de stock: antes de finalizar la compra, se verifica si hay stock disponible para todos los productos del carrito.
+- Al confirmar la compra, se descuenta el stock, se vacía el carrito y se muestra una notificación de compra exitosa.
+
 
 ---
 
