@@ -184,7 +184,6 @@ export const CartProvider = ({ children }) => {
       }
 
       clearCart();
-      toast.success('¡Gracias por tu compra!');
     } catch (error) {
       toast.error('Error al finalizar la compra.');
       console.error(error);

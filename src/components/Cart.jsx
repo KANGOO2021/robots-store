@@ -13,36 +13,7 @@ function Cart() {
     calculateTotal,
   } = useCart();
 
-  const { decreaseStock, getProductById } = useProduct();
-
-  // Finaliza la compra si hay stock suficiente y limpia el carrito
-  const finishPurchase = async () => {
-    if (cart.length === 0) {
-      toast.warn('El carrito está vacío');
-      return;
-    }
-
-    try {
-      for (const item of cart) {
-        const product = getProductById(item.id);
-        if (!product) {
-          toast.error(`El producto ${item.title} no existe.`);
-          return;
-        }
-        if (item.quantity > product.stock) {
-          toast.error(`No hay suficiente stock para ${item.title}.`);
-          return;
-        }
-      }
-
-      await Promise.all(cart.map(item => decreaseStock(item.id, item.quantity)));
-      clearCart();
-      toast.success('¡Gracias por tu compra!');
-    } catch (error) {
-      toast.error('Ocurrió un error al finalizar la compra.');
-      console.error('Error al finalizar la compra:', error);
-    }
-  };
+  const { getProductById } = useProduct();
 
   return (
     <>
@@ -163,13 +134,13 @@ function Cart() {
                 >
                   Vaciar Carrito
                 </button>
-                <button
+                <Link
+                  to="/checkout"
                   className="btn btn-success"
-                  onClick={finishPurchase}
                   aria-label="Finalizar compra"
                 >
                   Finalizar Compra
-                </button>
+                </Link>
               </div>
             </div>
           </>
@@ -180,6 +151,7 @@ function Cart() {
 }
 
 export default Cart;
+
 
 
 

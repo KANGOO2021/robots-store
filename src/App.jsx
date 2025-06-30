@@ -12,6 +12,7 @@ import Cart from './components/Cart';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminProducts from './pages/AdminProducts';
+import CheckoutForm from './components/CheckoutForm'; 
 
 // Layout
 import Header from './components/Header';
@@ -26,50 +27,41 @@ import { ProductProvider } from './context/ProductContext';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 
-
 function AppContent() {
-  // Estado local para el término de búsqueda usado en Gallery
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Función para actualizar término de búsqueda desde Header
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      {/* Header con barra de búsqueda */}
       <Header onSearch={handleSearch} />
 
-      {/* Contenido principal con rutas */}
       <main className="flex-grow-1">
         <Routes>
-          {/* Ruta pública principal */}
           <Route path="/" element={<Home />} />
-
-          {/* Ruta pública de catálogo, con búsqueda */}
           <Route path="/gallery" element={<Gallery searchTerm={searchTerm} />} />
-
-          {/* Ruta pública de contacto */}
           <Route path="/contact" element={<Contact />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-          {/* Ruta protegida para carrito, solo usuarios logueados */}
+          {/* Ruta protegida para carrito */}
           <Route path="/cart" element={
             <PrivateRoute>
               <Cart />
             </PrivateRoute>
           } />
 
-          {/* Ruta pública para detalle de producto dinámico */}
-          <Route path="/products/:id" element={<ProductDetail />} />
+          {/* ✅ Ruta protegida para el checkout con nombre corregido */}
+          <Route path="/checkout" element={
+            <PrivateRoute>
+              <CheckoutForm />
+            </PrivateRoute>
+          } />
 
-          {/* Ruta pública para login */}
-          <Route path="/login" element={<Login />} />
-
-          {/* Ruta pública para registro */}
-          <Route path="/register" element={<Register />} />
-
-          {/* Ruta protegida para administración, solo admins */}
+          {/* Ruta protegida solo para admins */}
           <Route path="/admin" element={
             <AdminRoute>
               <AdminProducts />
@@ -78,20 +70,12 @@ function AppContent() {
         </Routes>
       </main>
 
-      {/* Footer fijo */}
       <Footer />
-
-      {/* Contenedor para notificaciones toast */}
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1000}
-        hideProgressBar
-      />
+      <ToastContainer position="bottom-right" autoClose={1000} hideProgressBar />
     </div>
   );
 }
 
-// Componente principal que envuelve toda la app en proveedores y router
 function App() {
   return (
     <Router>
@@ -107,6 +91,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 

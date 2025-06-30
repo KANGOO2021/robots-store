@@ -101,7 +101,6 @@ function NavBar({ onSearch }) {
     setExpanded(false);
   };
 
-  // Generar título dinámico según ruta
   const pageTitle = (() => {
     switch (location.pathname) {
       case '/':
@@ -173,24 +172,13 @@ function NavBar({ onSearch }) {
         }
       `}</style>
 
-      <nav
-        className="navbar navbar-expand-lg navbar-dark bg-dark px-3"
-        aria-label="Barra de navegación principal"
-      >
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3" aria-label="Barra de navegación principal">
         <div className="container-fluid">
-          <Link
-            className="navbar-brand"
-            to="/"
-            onClick={handleLinkClick}
-            aria-current={location.pathname === '/' ? 'page' : undefined}
-          >
+          <Link className="navbar-brand" to="/" onClick={handleLinkClick}>
             Robots Store
           </Link>
 
-          <div
-            className="d-lg-none d-flex align-items-center gap-2 ms-auto"
-            aria-label="Controles de usuario y carrito en móvil"
-          >
+          <div className="d-lg-none d-flex align-items-center gap-2 ms-auto">
             {user && (
               <>
                 <Link
@@ -202,40 +190,24 @@ function NavBar({ onSearch }) {
                 >
                   🛒
                   {cartItemCount > 0 && (
-                    <span
-                      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
-                      style={{ fontSize: '0.7rem', padding: '0.3em 0.5em' }}
-                    >
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style={{ fontSize: '0.7rem', padding: '0.3em 0.5em' }}>
                       {cartItemCount}
                     </span>
                   )}
                 </Link>
 
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-link text-white p-0 fs-5"
-                  type="button"
-                  aria-label="Cerrar sesión"
-                >
+                <button onClick={handleLogout} className="btn btn-link text-white p-0 fs-5" type="button">
                   <BiLogOut size={24} />
                 </button>
 
                 {renderUserBadge()}
               </>
             )}
-
-            {!user &&
-              location.pathname !== '/login' &&
-              location.pathname !== '/register' && (
-                <Link
-                  className="text-white fs-5"
-                  to="/login"
-                  onClick={handleLinkClick}
-                  aria-label="Iniciar sesión"
-                >
-                  <BiLogIn size={24} />
-                </Link>
-              )}
+            {!user && location.pathname !== '/login' && location.pathname !== '/register' && (
+              <Link className="text-white fs-5" to="/login" onClick={handleLinkClick}>
+                <BiLogIn size={24} />
+              </Link>
+            )}
           </div>
 
           <button
@@ -249,43 +221,19 @@ function NavBar({ onSearch }) {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div
-            className={`collapse navbar-collapse ${expanded ? 'show' : ''}`}
-            id="navMenu"
-          >
+          <div className={`collapse navbar-collapse ${expanded ? 'show' : ''}`} id="navMenu">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/"
-                  onClick={handleLinkClick}
-                  aria-current={location.pathname === '/' ? 'page' : undefined}
-                >
-                  Inicio
-                </Link>
+                <Link className="nav-link" to="/" onClick={handleLinkClick}>Inicio</Link>
               </li>
               <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/gallery"
-                  onClick={handleLinkClick}
-                  aria-current={location.pathname === '/gallery' ? 'page' : undefined}
-                >
-                  Productos
-                </Link>
+                <Link className="nav-link" to="/gallery" onClick={handleLinkClick}>Productos</Link>
               </li>
               <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/contact"
-                  onClick={handleLinkClick}
-                  aria-current={location.pathname === '/contact' ? 'page' : undefined}
-                >
-                  Contacto
-                </Link>
+                <Link className="nav-link" to="/contact" onClick={handleLinkClick}>Contacto</Link>
               </li>
               {user?.role === 'admin' && (
-                <li className="nav-item d-block d-sm-none">
+                <li className="nav-item">
                   <Link
                     className="nav-link text-danger fw-bold"
                     to="/admin"
@@ -303,12 +251,7 @@ function NavBar({ onSearch }) {
                 <div className="w-100 d-lg-none mb-3">
                   <SearchBar searchTerm={searchTerm} onSearch={handleSearchChange} />
                 </div>
-                <div
-                  className="d-none d-md-flex ms-auto"
-                  style={{ maxWidth: '300px' }}
-                  role="search"
-                  aria-label="Buscar productos"
-                >
+                <div className="d-none d-md-flex ms-auto" style={{ maxWidth: '300px' }} role="search">
                   <SearchBar searchTerm={searchTerm} onSearch={handleSearchChange} />
                 </div>
               </>
@@ -317,64 +260,43 @@ function NavBar({ onSearch }) {
             <ul className="navbar-nav mb-2 mb-lg-0 d-none d-md-flex align-items-center">
               {user && (
                 <>
-                  <li
-                    className="nav-item me-2 position-relative"
-                    style={{ minWidth: '40px' }}
-                  >
+                  <li className="nav-item me-2 position-relative" style={{ minWidth: '40px' }}>
                     <Link
                       className="nav-link position-relative"
                       to="/cart"
                       onClick={handleLinkClick}
                       style={{ fontSize: '1.8rem', textDecoration: 'none', lineHeight: '1' }}
-                      aria-label={`Carrito de compras con ${cartItemCount} ${cartItemCount === 1 ? 'producto' : 'productos'}`}
+                      aria-label={`Carrito de compras con ${cartItemCount} productos`}
                     >
                       🛒
                       {cartItemCount > 0 && (
-                        <span
-                          className="position-absolute badge rounded-pill bg-success"
-                          style={{
-                            top: '0px',
-                            right: '-5px',
-                            fontSize: '0.7rem',
-                            padding: '0.3em 0.5em',
-                            transform: 'none',
-                          }}
-                        >
+                        <span className="position-absolute badge rounded-pill bg-success" style={{
+                          top: '0px',
+                          right: '-5px',
+                          fontSize: '0.7rem',
+                          padding: '0.3em 0.5em',
+                          transform: 'none',
+                        }}>
                           {cartItemCount}
                         </span>
                       )}
                     </Link>
                   </li>
-
                   <li className="nav-item">
-                    <button
-                      className="btn btn-outline-light btn-sm ms-2"
-                      onClick={handleLogout}
-                      type="button"
-                      aria-label="Cerrar sesión"
-                    >
+                    <button className="btn btn-outline-light btn-sm ms-2" onClick={handleLogout} type="button">
                       <BiLogOut size={20} />
                     </button>
                   </li>
-
                   <li className="nav-item">{renderUserBadge()}</li>
                 </>
               )}
-
-              {!user &&
-                location.pathname !== '/login' &&
-                location.pathname !== '/register' && (
-                  <li className="nav-item">
-                    <Link
-                      className="btn btn-outline-light btn-sm"
-                      to="/login"
-                      onClick={handleLinkClick}
-                      aria-label="Iniciar sesión"
-                    >
-                      <BiLogIn size={20} />
-                    </Link>
-                  </li>
-                )}
+              {!user && location.pathname !== '/login' && location.pathname !== '/register' && (
+                <li className="nav-item">
+                  <Link className="btn btn-outline-light btn-sm" to="/login" onClick={handleLinkClick}>
+                    <BiLogIn size={20} />
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -384,6 +306,7 @@ function NavBar({ onSearch }) {
 }
 
 export default NavBar;
+
 
 
 

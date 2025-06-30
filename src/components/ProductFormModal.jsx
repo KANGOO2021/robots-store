@@ -3,8 +3,8 @@ import Swal from 'sweetalert2';
 import { Modal } from 'bootstrap';
 
 /**
- * Modal que permite agregar o editar un producto.
- * Se controla desde el exterior con props `show`, `onClose`, `onSave` e `initialData`.
+ * Modal para agregar o editar un producto.
+ * Soporta carga de imágenes desde la PC y subida a Cloudinary.
  */
 export default function ProductFormModal({ show, onClose, onSave, initialData = null }) {
   const [form, setForm] = useState({
@@ -19,10 +19,7 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
   const modalRef = useRef(null);
   const bsModal = useRef(null);
 
-  /**
-   * Inicializa o actualiza el estado del modal Bootstrap
-   * cuando cambia la prop `show`.
-   */
+  // Muestra u oculta el modal según el estado externo
   useEffect(() => {
     if (!bsModal.current) {
       bsModal.current = new Modal(modalRef.current, {
@@ -30,17 +27,10 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
         keyboard: false,
       });
     }
-
-    if (show) {
-      bsModal.current.show();
-    } else {
-      bsModal.current.hide();
-    }
+    show ? bsModal.current.show() : bsModal.current.hide();
   }, [show]);
 
-  /**
-   * Cuando cambian los datos iniciales, los carga en el formulario.
-   */
+  // Carga los datos iniciales si se edita un producto
   useEffect(() => {
     if (initialData) {
       setForm({
@@ -63,17 +53,13 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
     }
   }, [initialData]);
 
-  /**
-   * Maneja el cambio de cualquier campo del formulario.
-   */
+  // Maneja los cambios de los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  /**
-   * Valida y envía el formulario al hacer submit.
-   */
+  // Enviar formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.title || !form.price || !form.stock) {
@@ -87,12 +73,50 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
     });
   };
 
-  /**
-   * Cierra el modal manualmente y notifica al componente padre.
-   */
+  // Cierra el modal
   const handleClose = () => {
     bsModal.current.hide();
     onClose();
+  };
+
+  // Sube imagen a Cloudinary
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validaciones
+    if (!file.type.startsWith('image/')) {
+      Swal.fire('Archivo inválido', 'El archivo debe ser una imagen', 'error');
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      Swal.fire('Muy grande', 'La imagen debe pesar menos de 2MB', 'warning');
+      return;
+    }
+
+    Swal.fire({ title: 'Subiendo imagen...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'robots_upload'); // Usar tu upload preset
+
+    try {
+      const res = await fetch('https://api.cloudinary.com/v1_1/ddyxr8ikt/image/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (data.secure_url) {
+        setForm(prev => ({ ...prev, image: data.secure_url }));
+        Swal.fire('Listo', 'Imagen subida con éxito', 'success');
+      } else {
+        throw new Error('Fallo la subida');
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire('Error', 'No se pudo subir la imagen', 'error');
+    }
   };
 
   return (
@@ -119,6 +143,7 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
               ></button>
             </div>
             <div className="modal-body">
+
               <div className="mb-3">
                 <label htmlFor="inputTitle" className="form-label">Título*</label>
                 <input
@@ -132,6 +157,7 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
                   aria-required="true"
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="inputDescription" className="form-label">Descripción corta</label>
                 <textarea
@@ -143,6 +169,7 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
                   rows={2}
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="inputDetails" className="form-label">Detalles</label>
                 <textarea
@@ -154,6 +181,7 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
                   rows={4}
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="inputPrice" className="form-label">Precio*</label>
                 <input
@@ -168,6 +196,7 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
                   aria-required="true"
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="inputStock" className="form-label">Stock*</label>
                 <input
@@ -181,18 +210,46 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
                   aria-required="true"
                 />
               </div>
+
               <div className="mb-3">
-                <label htmlFor="inputImage" className="form-label">URL Imagen</label>
+                <label htmlFor="inputImage" className="form-label">URL Imagen o seleccionar archivo</label>
                 <input
                   type="text"
                   id="inputImage"
-                  className="form-control"
+                  className="form-control mb-2"
                   name="image"
                   value={form.image}
                   onChange={handleChange}
+                  placeholder="URL o usar archivo abajo"
                 />
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="form-control"
+                  onChange={handleImageUpload}
+                />
+
+                {form.image && (
+                  <div className="text-center mt-2">
+                    <img
+                      src={form.image}
+                      alt="Vista previa"
+                      style={{
+                        maxWidth: '150px',
+                        maxHeight: '150px',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                        border: '1px solid #ddd',
+                        padding: '4px',
+                      }}
+                    />
+                  </div>
+                )}
               </div>
+
             </div>
+
             <div className="modal-footer">
               <button type="submit" className="btn btn-success">
                 {initialData ? 'Actualizar' : 'Agregar'}
@@ -207,6 +264,7 @@ export default function ProductFormModal({ show, onClose, onSave, initialData = 
     </div>
   );
 }
+
 
 
 
